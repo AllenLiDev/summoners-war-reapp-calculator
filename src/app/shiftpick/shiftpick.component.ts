@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-shiftpick',
   templateUrl: './shiftpick.component.html',
-  styleUrls: ['./shiftpick.component.css']
+  styleUrls: ['./shiftpick.component.scss']
 })
 export class ShiftpickComponent implements OnInit {
 

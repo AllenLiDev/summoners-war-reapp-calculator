@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Global Colors
+$blue: #CAEBF2;
+$dark: #A9A9A9;
+$red: #FF3B3F;
+$grey: #EFEFEF;
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.shell-padding {
+    padding: 15px 15px;
+}
+
+.section-header {
+    background-color: $grey;
+}
