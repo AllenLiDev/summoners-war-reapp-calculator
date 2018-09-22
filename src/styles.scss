@@ -17,3 +17,21 @@ body {
 .section-header {
     background-color: $grey;
 }
+
+.section-header i {
+    padding: 0 5px 0;
+}
+
+.section-content {
+    padding: 15px 15px;
+    margin: 15px 0 0;
+    background-color: $grey;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
+.auto-margin {
+    margin: auto 0;
+}

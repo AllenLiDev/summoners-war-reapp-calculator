@@ -1,7 +1,7 @@
 <div class="shell-padding">
   <div class="container-fluid">
     <!-- Section Header -->
-    <div class="row justify-content-between section-header">
+    <div class="row justify-content-between section-header p-2">
       <div>
         <span><i class="fas fa-home"></i>Dashboard</span>
       </div>
@@ -11,7 +11,52 @@
     </div>
     <!-- Section Content -->
     <div class="row">
-
+      <!-- User Profile -->
+      <div class="col-xl-6 section-content">
+        PROFILE
+      </div>
+      <!-- Next Shift -->
+      <div class="col-xl-6 section-content shift-card">
+        <div class="row p-2">
+          <div class="col-8 auto-margin">
+            <h4>Next Shift: Bonsor Pool</h4>
+            <h2>{{ dateObj | date: 'EEEE, MMMM d' }}</h2>
+            <h2 class="no-bottom-margin">9:00 AM - 11:00 PM</h2>
+          </div>
+          <div class="col-4">
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Hours
+                <span class="badge badge-primary badge-pill">14</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Type
+                <span class="badge badge-primary badge-pill">G / T / AQFT</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Info
+                <span class="fas fa-arrow-circle-right"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Hours This Week -->
+      <div class="col-sm-6 section-content">
+        Hours Work this week
+      </div>
+      <!-- Newest Coverage Post -->
+      <div class="col-sm-6 section-content">
+        NEWEST COVERAGE POST
+      </div>
+      <!-- Shift Pick Info -->
+      <div class="col-sm-6 section-content">
+        Shiftpick INFO
+      </div>
+      <!-- Awards Info -->
+      <div class="col-sm-6 section-content">
+        AWARDS STATUS
+      </div>
     </div>
   </div>
 </div>
