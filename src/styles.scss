@@ -1,10 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Bootstrap Mixin for breakpoints
+@import "../node_modules/bootstrap/scss/bootstrap-grid.scss";
+
+
 // Global Colors
 $blue: #CAEBF2;
 $dark: #A9A9A9;
 $red: #FF3B3F;
 $grey: #EFEFEF;
+
+// Bootstrap Breakpoint usage
+// @include media-breakpoint-down(xs) { ... }
+// @include media-breakpoint-down(sm) { ... }
+// @include media-breakpoint-down(md) { ... }
+// @include media-breakpoint-down(lg) { ... }
 
 body {
     font-family: 'Montserrat', sans-serif;
@@ -16,10 +26,11 @@ body {
 
 .section-header {
     background-color: $grey;
+    padding: 15px 15px;
 }
 
-.section-header i {
-    padding: 0 5px 0;
+.icon-pad {
+    padding: 0 5px 0 0;
 }
 
 .section-content {
@@ -30,6 +41,9 @@ body {
 
 .no-bottom-margin {
     margin-bottom: 0;
+    @include media-breakpoint-down(xs) {
+        margin-bottom: 15px;
+    }
 }
 
 .auto-margin {

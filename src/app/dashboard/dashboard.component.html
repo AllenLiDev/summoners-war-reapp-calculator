@@ -1,9 +1,9 @@
 <div class="shell-padding">
   <div class="container-fluid">
     <!-- Section Header -->
-    <div class="row justify-content-between section-header p-2">
+    <div class="row justify-content-between section-header">
       <div>
-        <span><i class="fas fa-home"></i>Dashboard</span>
+        <span><i class="fas fa-home icon-pad"></i>Dashboard</span>
       </div>
       <div>
         {{ dateObj | date:'fullDate' }}
@@ -13,17 +13,100 @@
     <div class="row">
       <!-- User Profile -->
       <div class="col-xl-6 section-content">
-        PROFILE
+        <div class="row">
+          <div class="col-12">
+            <span><i class="fas fa-user icon-pad"></i>Allen Li</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="row text-right">
+              <div class="col-12">
+                <h3>35.5</h3>
+              </div>
+              <div class="col-12">
+                <h5>Hours</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="row text-right">
+              <div class="col-12">
+                <h3>35.5</h3>
+              </div>
+              <div class="col-12">
+                <h5>Hours</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="row text-right">
+              <div class="col-12">
+                <h3>35.5</h3>
+              </div>
+              <div class="col-12">
+                <h5>Hours</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="row text-right">
+              <div class="col-12">
+                <h3>35.5</h3>
+              </div>
+              <div class="col-12">
+                <h5>Hours</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Next Shift -->
       <div class="col-xl-6 section-content shift-card">
-        <div class="row p-2">
-          <div class="col-8 auto-margin">
-            <h4>Next Shift: Bonsor Pool</h4>
-            <h2>{{ dateObj | date: 'EEEE, MMMM d' }}</h2>
-            <h2 class="no-bottom-margin">9:00 AM - 11:00 PM</h2>
+        <div class="row">
+          <div class="col-12">
+            <span><i class="fas fa-briefcase icon-pad"></i>Next Shift</span>
           </div>
-          <div class="col-4">
+        </div>
+        <div class="row">
+          <div class="col-sm-8 auto-margin">
+            <h5>Bonsor Pool</h5>
+            <h3>{{ dateObj | date: 'EEEE, MMMM d' }}</h3>
+            <h3 class="no-bottom-margin">9:00 AM - 11:00 PM</h3>
+          </div>
+          <div class="col-sm-4">
             <ul class="list-group">
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 Hours
