@@ -1,11 +1,7 @@
-# Shiftpicker App
+# Summoners War Reappraisal Calculator
 
-A Shift Management App
+Calculate Best Odds for Reapps + Simulate Reapps
 
 Version 0.0.1
 
-Redone Using Angular + Bootstrap Framework
-Using dummy data instead of private City data
-
-
-by Allen Li
+by Headhuntar
