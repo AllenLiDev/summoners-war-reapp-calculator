@@ -39,6 +39,10 @@ body {
     background-color: $grey;
 }
 
+.section-content .row {
+    padding-bottom: 15px;
+}
+
 .no-bottom-margin {
     margin-bottom: 0;
     @include media-breakpoint-down(xs) {

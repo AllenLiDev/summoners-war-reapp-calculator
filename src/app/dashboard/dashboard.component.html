@@ -93,52 +93,41 @@
           </div>
         </div>
       </div>
-      <!-- Next Shift -->
-      <div class="col-xl-6 section-content shift-card">
+      <!-- Rune Select -->
+      <div class="col-md-6 section-content shift-card">
         <div class="row">
           <div class="col-12">
-            <span><i class="fas fa-briefcase icon-pad"></i>Next Shift</span>
+            <span><i class="fas fa-filter icon-pad"></i>Slot Select</span>
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-8 auto-margin">
-            <h5>Bonsor Pool</h5>
-            <h3>{{ dateObj | date: 'EEEE, MMMM d' }}</h3>
-            <h3 class="no-bottom-margin">9:00 AM - 11:00 PM</h3>
-          </div>
-          <div class="col-sm-4">
+          <div class="col-4">
             <ul class="list-group">
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                Hours
-                <span class="badge badge-primary badge-pill">14</span>
+                Slot 1
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                Type
-                <span class="badge badge-primary badge-pill">G / T / AQFT</span>
+                Slot 2
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                Info
-                <span class="fas fa-arrow-circle-right"></span>
+                Slot 3
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Slot 4
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Slot 5
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Slot 6
               </li>
             </ul>
           </div>
+          <div class="col-8">
+            <h5>{{slotSelected}}</h5>
+            <img alt="selected slot">
+          </div>
         </div>
-      </div>
-      <!-- Hours This Week -->
-      <div class="col-sm-6 section-content">
-        Hours Work this week
-      </div>
-      <!-- Newest Coverage Post -->
-      <div class="col-sm-6 section-content">
-        NEWEST COVERAGE POST
-      </div>
-      <!-- Shift Pick Info -->
-      <div class="col-sm-6 section-content">
-        Shiftpick INFO
-      </div>
-      <!-- Awards Info -->
-      <div class="col-sm-6 section-content">
-        AWARDS STATUS
       </div>
     </div>
   </div>
