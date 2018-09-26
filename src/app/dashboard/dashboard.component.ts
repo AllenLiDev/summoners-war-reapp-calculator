@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   primeElementSelected;
   primeValue: String = "None";
   inateSelected: String = 'None';
+  subStats: Array<String>;
   statTypes: Array<String> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
   slotNumbers: Array<String> = ['Slot 1', 'Slot 2', 'Slot 3', 'Slot 4', 'Slot 5', 'Slot 6'];
   constructor() { }
@@ -158,6 +159,7 @@ export class DashboardComponent implements OnInit {
     // same current active prime
     this.primeElementSelected = event.srcElement;
     this.setPrimeValue(prime);
+    this.setPossibleSubstats();
   }
 
   setPrimeValue = (type: String) => {
@@ -196,5 +198,46 @@ export class DashboardComponent implements OnInit {
         this.primeValue = '64% RES';
         return;
     }
+  }
+
+  setPossibleSubstats = () => {
+    var removePrimary = () =>{
+      if(this.primeSelected === 'primeFlatHp'){
+        this.subStats.splice(this.subStats.indexOf('HP +'), 1);
+      } else if(this.primeSelected === 'primeFlatDef'){
+        this.subStats.splice(this.subStats.indexOf('DEF +'), 1);
+      } else if(this.primeSelected === 'primeFlatAtt'){
+        this.subStats.splice(this.subStats.indexOf('ATT +'), 1);
+      } else if(this.primeSelected === 'primeDef'){
+        this.subStats.splice(this.subStats.indexOf('DEF %'), 1);
+      } else if(this.primeSelected === 'primeHp'){
+        this.subStats.splice(this.subStats.indexOf('HP %'), 1);
+      } else if(this.primeSelected === 'primeAtt'){
+        this.subStats.splice(this.subStats.indexOf('ATT %'), 1);
+      } else if(this.primeSelected === 'primeSpd'){
+        this.subStats.splice(this.subStats.indexOf('SPD +'), 1);
+      } else if(this.primeSelected === 'primeAcc'){
+        this.subStats.splice(this.subStats.indexOf('ACC +'), 1);
+      } else if(this.primeSelected === 'primeRes'){
+        this.subStats.splice(this.subStats.indexOf('RES +'), 1);
+      } else if(this.primeSelected === 'primeCrit'){
+        this.subStats.splice(this.subStats.indexOf('CRIT +'), 1);
+      } else if(this.primeSelected === 'primeCdmg'){
+        this.subStats.splice(this.subStats.indexOf('CDMG +'), 1);
+      } 
+    }
+
+    // based on slot
+    if (this.slotSelected === 'Slot 1') {
+      this.subStats = ['ATT %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+    } else if (this.slotSelected === 'Slot 3') {
+      this.subStats = ['DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+    } else if (this.slotSelected === 'Slot 5') {
+      this.subStats = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+    } else {
+      this.subStats = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+      removePrimary();
+    }
+    console.log(this.subStats);
   }
 }
