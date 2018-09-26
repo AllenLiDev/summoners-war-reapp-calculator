@@ -20,8 +20,8 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <ul class="list-group">
-              <li *ngFor="let slot of slotNumbers" (click)="setSlotSelected(slot)" class="list-group-item d-flex justify-content-between align-items-center">
+            <ul id="slot-select" class="list-group">
+              <li *ngFor="let slot of slotNumbers" (click)="setSlotSelected(slot, $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 {{slot}}
               </li>
             </ul>
@@ -37,42 +37,42 @@
         </div>
         <div class="row">
           <div class="col-6">
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                ATT %
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+            <ul id="primeStats" class="list-group">
+              <li id="primeFlatAtt" (click)="setPrimeSelected('primeFlatAtt', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 ATT +
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                HP %
+              <li id="primeAtt" (click)="setPrimeSelected('primeAtt', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                ATT %
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                HP +
+              <li id="primeFlatDef" (click)="setPrimeSelected('primeFlatDef', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                DEF +
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li id="primeDef" (click)="setPrimeSelected('primeDef', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 DEF %
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                DEF +
+              <li id="primeFlatHp" (click)="setPrimeSelected('primeFlatHp', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                HP +
+              </li>
+              <li id="primeHp" (click)="setPrimeSelected('primeHp', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                HP %
               </li>
             </ul>
           </div>
           <div class="col-6">
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+            <ul id="primeStats2" class="list-group">
+              <li id="primeSpd" (click)="setPrimeSelected('primeSpd', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 SPD
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li id="primeCrit" (click)="setPrimeSelected('primeCrit', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 CRIT
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li id="primeCdmg" (click)="setPrimeSelected('primeCdmg', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 CDMG
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li id="primeRes" (click)="setPrimeSelected('primeRes', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 RES
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li id="primeAcc" (click)="setPrimeSelected('primeAcc', $event)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 ACC
               </li>
             </ul>
@@ -89,7 +89,7 @@
         <div class="row">
           <div class="col-md-4 main-stat">
             <h5>Primary Stat</h5>
-            <h1>63% HP</h1>
+            <h1>{{primeValue}}</h1>
           </div>
           <div class="col-md-8">
             <h5>Inate Stat</h5>
@@ -103,7 +103,7 @@
                 <div class="dropdown-menu">
                   <a *ngFor="let stat of statTypes" (click)="setInateSelected(stat)" class="dropdown-item">{{stat}}</a>
                   <div role="separator" class="dropdown-divider"></div>
-                  <a (click)="setInateSelected('None')"class="dropdown-item">None</a>
+                  <a (click)="setInateSelected('None')" class="dropdown-item">None</a>
                 </div>
               </div>
               <input type="text" class="form-control" aria-label="Inate stat value">
