@@ -35,7 +35,7 @@ body {
 
 .section-content {
     padding: 15px 15px;
-    margin: 15px 0 0;
+    margin: 15px 0;
     background-color: $grey;
 }
 
@@ -52,4 +52,13 @@ body {
 
 .auto-margin {
     margin: auto 0;
+}
+
+.subsec-pad {
+    padding: 0 15px;
+}
+
+.main-stat {
+    text-align: center;
+    vertical-align: middle;
 }

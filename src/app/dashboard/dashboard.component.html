@@ -11,7 +11,108 @@
     </div>
     <!-- Section Content -->
     <div class="row">
-      <!-- User Profile -->
+      <!-- Rune Select -->
+      <div class="col-md-4 col-sm-6 section-content">
+        <div class="row">
+          <div class="col-12">
+            <span><i class="fas fa-filter icon-pad"></i>Slot Select</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <ul class="list-group">
+              <li *ngFor="let slot of slotNumbers" (click)="setSlotSelected(slot)" class="list-group-item d-flex justify-content-between align-items-center">
+                {{slot}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Rune Stats -->
+      <div class="col-md-8 col-sm-6 section-content">
+        <div class="row">
+          <div class="col-12">
+            <span><i class="fas fa-star icon-pad"></i>Primary Stat</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                ATT %
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                ATT +
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                HP %
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                HP +
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                DEF %
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                DEF +
+              </li>
+            </ul>
+          </div>
+          <div class="col-6">
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                SPD
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                CRIT
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                CDMG
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                RES
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                ACC
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Roll Rune -->
+      <div class="col-12 section-content">
+        <div class="row">
+          <div class="col-12">
+            <span><i class="fas fa-sync icon-pad"></i>ReRoll</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 main-stat">
+            <h5>Primary Stat</h5>
+            <h1>63% HP</h1>
+          </div>
+          <div class="col-md-8">
+            <h5>Inate Stat</h5>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button type="button" class="btn btn-outline-secondary">{{inateSelected}}</button>
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                  <a *ngFor="let stat of statTypes" (click)="setInateSelected(stat)" class="dropdown-item">{{stat}}</a>
+                  <div role="separator" class="dropdown-divider"></div>
+                  <a (click)="setInateSelected('None')"class="dropdown-item">None</a>
+                </div>
+              </div>
+              <input type="text" class="form-control" aria-label="Inate stat value">
+            </div>
+            <h5>Sub Stats</h5>
+          </div>
+        </div>
+      </div>
+      <!-- Rune Odds -->
       <div class="col-xl-6 section-content">
         <div class="row">
           <div class="col-12">
@@ -93,42 +194,5 @@
           </div>
         </div>
       </div>
-      <!-- Rune Select -->
-      <div class="col-md-6 section-content shift-card">
-        <div class="row">
-          <div class="col-12">
-            <span><i class="fas fa-filter icon-pad"></i>Slot Select</span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Slot 1
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Slot 2
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Slot 3
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Slot 4
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Slot 5
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Slot 6
-              </li>
-            </ul>
-          </div>
-          <div class="col-8">
-            <h5>{{slotSelected}}</h5>
-            <img alt="selected slot">
-          </div>
-        </div>
-      </div>
     </div>
   </div>
-</div>
