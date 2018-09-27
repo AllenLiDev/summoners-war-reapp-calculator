@@ -50,23 +50,12 @@ body {
     }
 }
 
-.auto-margin {
-    margin: auto 0;
-}
-
 .subsec-pad {
     padding: 0 15px;
 }
 
-.main-stat {
-    text-align: center;
-    vertical-align: middle;
+.statistic {
+    margin-bottom: 15px;
+    max-width: 50%;
 }
 
-#primeStats .disabled {
-    background-color: $dark;
-}
-
-#primeStats2 .disabled {
-    background-color: $dark;
-}

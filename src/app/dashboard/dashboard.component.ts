@@ -8,148 +8,85 @@ import { $, element } from 'protractor';
 })
 export class DashboardComponent implements OnInit {
   dateObj: Date = new Date();
-  slotSelected: String = 'Select a slot';
+  // Slot vars
+  slotSelected: number;
   slotElementSelected;
-  primeSelected: String;
+  // Primary Stat vars
+  primeSelected: string;
   primeElementSelected;
-  primeValue: String = "None";
-  inateSelected: String = 'None';
-  subStats: Array<String>;
-  statTypes: Array<String> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
-  slotNumbers: Array<String> = ['Slot 1', 'Slot 2', 'Slot 3', 'Slot 4', 'Slot 5', 'Slot 6'];
+  primeValue: string = "None";
+  // Inate vars
+  inateSelected: string = 'None';
+  // Arrays
+  rolledStats: Array<RolledStats> = [];
+  primeOne: Array<string> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %'];
+  primeTwo: Array<string> = ['SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+  subStats: Array<string> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+  statTypes: Array<string> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+  slotNumbers: Array<string> = ['Slot 1', 'Slot 2', 'Slot 3', 'Slot 4', 'Slot 5', 'Slot 6'];
   constructor() { }
 
   ngOnInit() {
-    // // odds are
-    // slot 1 - 1/9 
-    // slot 2 - 1/10
-    // slot 3 - 1/9
-    // slot 4 - 1/10 
-    // slot 5 - 1/10
-    // slot 6 - 1/10
-
-    // inate stat minutes 1
-
-    // quad roll 1/30/30/30/30/30
-
-    // spd roll max 1 / 3
   }
 
-  setInateSelected = (stat: String) => {
-    this.inateSelected = stat;
-  }
-
-  setSlotSelected = (slot: String, event: Event) => {
+  // onclick function to set the Slot
+  setSlotSelected = (slotNum: number, event: Event) => {
     // check if slot already been selected
-    if (this.slotSelected === slot) {
+    if (this.slotSelected === slotNum) {
       return;
     }
     // check if first choice has been made
     if (this.slotElementSelected) {
+      // turn last active off
       this.slotElementSelected.classList.toggle('active');
+      // Reset Primary variables
+      this.resetPrimary();
     }
+    // reset inate variables
+    this.resetInate();
     // set selected slot string to new
-    this.slotSelected = slot;
-    // set active slot class
+    this.slotSelected = slotNum;
+    // set active to slot classlist
     event.srcElement.classList.toggle('active');
-    // same current active slot
+    // save current active slot
     this.slotElementSelected = event.srcElement;
-    // set primary stats possible based on slot choice
-    this.setPrimaryStatChoices(slot);
-  }
-
-  setPrimaryStatChoices = (primary: String) => {
-    // remove disabled from all
-    document.querySelectorAll('#primeStats li').forEach((item) => {
-      item.classList.remove('disabled');
-    });
-    document.querySelectorAll('#primeStats2 li').forEach((item) => {
-      item.classList.remove('disabled');
-    });
-    // function to disable based on slot, 0 = all slots
-    var disable = (slot: Number) => {
-      if (slot === 0) {
-        document.querySelectorAll('#primeStats li').forEach((item) => {
-          item.classList.add('disabled');
-        });
-        document.querySelectorAll('#primeStats2 li').forEach((item) => {
-          item.classList.add('disabled');
-        });
-      } else if (slot === 2) {
-        document.getElementById('primeCrit').classList.add('disabled');
-        document.getElementById('primeCdmg').classList.add('disabled');
-        document.getElementById('primeAcc').classList.add('disabled');
-        document.getElementById('primeRes').classList.add('disabled');
-      } else if (slot === 4) {
-        document.getElementById('primeSpd').classList.add('disabled');
-        document.getElementById('primeAcc').classList.add('disabled');
-        document.getElementById('primeRes').classList.add('disabled');
-      } else if (slot === 6) {
-        document.getElementById('primeSpd').classList.add('disabled');
-        document.getElementById('primeCrit').classList.add('disabled');
-        document.getElementById('primeCdmg').classList.add('disabled');
-      }
-    }
-    // check if first choice has been made
-    if (this.primeElementSelected) {
-      this.primeElementSelected.classList.toggle('active');
-    }
-    // do slot management based on primary slot
-    switch (primary) {
-      case 'Slot 1':
-        disable(0);
-        document.getElementById('primeFlatAtt').classList.toggle('active');
-        document.getElementById('primeFlatAtt').classList.remove('disabled');
-        this.primeElementSelected = document.getElementById('primeFlatAtt');
-        this.primeSelected = 'primeFlatAtt';
-        this.setPrimeValue('primeFlatAtt');
+    // set primary stats choices based on slot choice
+    switch (slotNum) {
+      case 0:
+        this.primeOne = ['ATT +'];
+        this.primeTwo = [];
         return;
-      case 'Slot 3':
-        disable(0);
-        document.getElementById('primeFlatDef').classList.toggle('active');
-        document.getElementById('primeFlatDef').classList.remove('disabled');
-        this.primeElementSelected = document.getElementById('primeFlatDef');
-        this.primeSelected = 'primeFlatDef';
-        this.setPrimeValue('primeFlatDef');
+      case 1:
+        this.primeOne = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %'];
+        this.primeTwo = ['SPD'];
         return;
-      case 'Slot 5':
-        disable(0);
-        document.getElementById('primeFlatHp').classList.toggle('active');
-        document.getElementById('primeFlatHp').classList.remove('disabled');
-        this.primeElementSelected = document.getElementById('primeFlatHp');
-        this.primeSelected = 'primeFlatHp';
-        this.setPrimeValue('primeFlatHp');
+      case 2:
+        this.primeOne = ['DEF +'];
+        this.primeTwo = [];
         return;
-      case 'Slot 2':
-        disable(2);
-        document.getElementById('primeSpd').classList.toggle('active');
-        this.primeElementSelected = document.getElementById('primeSpd');
-        this.primeSelected = 'primeSpd';
-        this.setPrimeValue('primeSpd');
+      case 3:
+        this.primeOne = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %'];
+        this.primeTwo = ['CRIT', 'CDMG'];
         return;
-      case 'Slot 4':
-        disable(4);
-        document.getElementById('primeCdmg').classList.toggle('active');
-        this.primeElementSelected = document.getElementById('primeCdmg');
-        this.primeSelected = 'primeCdmg';
-        this.setPrimeValue('primeCdmg');
+      case 4:
+        this.primeOne = ['HP +'];
+        this.primeTwo = [];
         return;
-      case 'Slot 6':
-        disable(6);
-        document.getElementById('primeHp').classList.toggle('active');
-        this.primeElementSelected = document.getElementById('primeHp');
-        this.primeSelected = 'primeHp';
-        this.setPrimeValue('primeHp');
+      case 5:
+        this.primeOne = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %'];
+        this.primeTwo = ['RES', 'ACC'];
         return;
     }
   }
 
-  setPrimeSelected = (prime: String, event: Event) => {
+  // onclick function to set the Primary Stat
+  setPrimeSelected = (prime: string, event: Event) => {
     if (this.primeSelected === prime) {
       return;
     }
     // check if first choice has been made
     if (this.primeElementSelected) {
+      // remove active from previouisly active class
       this.primeElementSelected.classList.toggle('active');
     }
     // set selected prime string to new
@@ -158,86 +95,140 @@ export class DashboardComponent implements OnInit {
     event.srcElement.classList.toggle('active');
     // same current active prime
     this.primeElementSelected = event.srcElement;
-    this.setPrimeValue(prime);
-    this.setPossibleSubstats();
+    this.resetInate();
   }
 
-  setPrimeValue = (type: String) => {
+  setPrimeValue = (type: string) => {
+    // remove primary stat from substats array
+    this.subStats.splice(this.subStats.indexOf(type), 1);
     switch (type) {
-      case 'primeFlatDef':
+      case 'DEF +':
         this.primeValue = '+160 DEF';
         return;
-      case 'primeDef':
+      case 'DEF %':
         this.primeValue = '63% DEF';
         return;
-      case 'primeFlatAtt':
+      case 'ATT +':
         this.primeValue = '+160 ATT';
         return;
-      case 'primeAtt':
+      case 'ATT %':
         this.primeValue = '63% ATT';
         return;
-      case 'primeHp':
+      case 'HP %':
         this.primeValue = '63% HP';
         return;
-      case 'primeFlatHp':
+      case 'HP +':
         this.primeValue = '+2448 HP';
         return;
-      case 'primeSpd':
+      case 'SPD':
         this.primeValue = '+42 SPD';
         return;
-      case 'primeCrit':
+      case 'CRIT':
         this.primeValue = '58% CRIT';
         return;
-      case 'primeCdmg':
+      case 'CDMG':
         this.primeValue = '80% CDMG';
         return;
-      case 'primeAcc':
+      case 'ACC':
         this.primeValue = '64% ACC';
         return;
-      case 'primeRes':
+      case 'RES':
         this.primeValue = '64% RES';
         return;
     }
   }
 
-  setPossibleSubstats = () => {
-    var removePrimary = () =>{
-      if(this.primeSelected === 'primeFlatHp'){
-        this.subStats.splice(this.subStats.indexOf('HP +'), 1);
-      } else if(this.primeSelected === 'primeFlatDef'){
-        this.subStats.splice(this.subStats.indexOf('DEF +'), 1);
-      } else if(this.primeSelected === 'primeFlatAtt'){
-        this.subStats.splice(this.subStats.indexOf('ATT +'), 1);
-      } else if(this.primeSelected === 'primeDef'){
-        this.subStats.splice(this.subStats.indexOf('DEF %'), 1);
-      } else if(this.primeSelected === 'primeHp'){
-        this.subStats.splice(this.subStats.indexOf('HP %'), 1);
-      } else if(this.primeSelected === 'primeAtt'){
-        this.subStats.splice(this.subStats.indexOf('ATT %'), 1);
-      } else if(this.primeSelected === 'primeSpd'){
-        this.subStats.splice(this.subStats.indexOf('SPD +'), 1);
-      } else if(this.primeSelected === 'primeAcc'){
-        this.subStats.splice(this.subStats.indexOf('ACC +'), 1);
-      } else if(this.primeSelected === 'primeRes'){
-        this.subStats.splice(this.subStats.indexOf('RES +'), 1);
-      } else if(this.primeSelected === 'primeCrit'){
-        this.subStats.splice(this.subStats.indexOf('CRIT +'), 1);
-      } else if(this.primeSelected === 'primeCdmg'){
-        this.subStats.splice(this.subStats.indexOf('CDMG +'), 1);
-      } 
-    }
-
-    // based on slot
-    if (this.slotSelected === 'Slot 1') {
-      this.subStats = ['ATT %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
-    } else if (this.slotSelected === 'Slot 3') {
-      this.subStats = ['DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
-    } else if (this.slotSelected === 'Slot 5') {
-      this.subStats = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+  // reset all inate value called when new slot / primary stat selected
+  resetInate = () => {
+    this.inateSelected = 'None';
+    if (this.slotSelected === 0) {
+      this.subStats = ['ATT +', 'ATT %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
+    } else if (this.slotSelected == 2) {
+      this.subStats = ['DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
     } else {
       this.subStats = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
-      removePrimary();
     }
-    console.log(this.subStats);
   }
+
+  // reset all primary stats when slot changed
+  resetPrimary = () => {
+    // Reset Primary Stat Selected
+    this.primeValue = 'None';
+    // Reset element Primary Stat selected
+    if (this.primeElementSelected) {
+      this.primeElementSelected.classList.toggle('active');
+      this.primeElementSelected = null;
+    }
+    // Reset check variable
+    this.primeSelected = '';
+  }
+
+  // sets the inate stat selected
+  setInateSelected = (inate: string) => {
+    this.inateSelected = inate;
+    this.subStats.splice(this.subStats.indexOf(inate), 1);
+  }
+
+  // onclick reapp function 
+  reapp = () => {
+    let temp: Array<number> = [];
+    let hits: Array<number> = [1, 1, 1, 1];
+    let count = 0;
+    // check function needed here
+
+    // clear rolled stats
+    this.rolledStats = [];
+    // roll new numbers
+    while (temp.length < 4) {
+      let newNum = Math.floor((Math.random() * (this.subStats.length)));
+      if (!temp.includes(newNum)) {
+        temp.push(newNum);
+      }
+    }
+    // roll stat hits
+    for (let i = 0; i < 4; i++) {
+      hits[Math.floor((Math.random() * 4))] += 1;
+    }
+    // popular rolled stats
+    temp.forEach((num: number) => {
+      this.rolledStats.push({ statName: this.subStats[num], statValue: this.rollStat(this.subStats[num], hits[count++]) });
+    });
+
+  }
+
+  /// Roll stat based on input: name stat
+  rollStat = (type: string, numOfTimes: number) => {
+    let sum: number = 0;
+    if (type === 'DEF %' || type === 'HP %' || type === 'ATT %') {
+      for (let i = 0; i < numOfTimes; i++) {
+        sum += Math.floor((Math.random() * 4) + 5);
+      }
+    } else if (type === 'DEF +' || type === 'ATT +') {
+      for (let i = 0; i < numOfTimes; i++) {
+        sum += Math.floor((Math.random() * 11) + 10);
+      }
+    } else if (type === 'HP +') {
+      for (let i = 0; i < numOfTimes; i++) {
+        sum += Math.floor((Math.random() * 241) + 135);
+      }
+    } else if (type === 'SPD' || type === 'CRIT') {
+      for (let i = 0; i < numOfTimes; i++) {
+        sum += Math.floor((Math.random() * 3) + 4);
+      }
+    } else if (type === 'ACC' || type === 'RES') {
+      for (let i = 0; i < numOfTimes; i++) {
+        sum += Math.floor((Math.random() * 5) + 4);
+      }
+    } else if (type === 'CDMG') {
+      for (let i = 0; i < numOfTimes; i++) {
+        sum += Math.floor((Math.random() * 4) + 4);
+      }
+    }
+    return sum;
+  }
+}
+
+export interface RolledStats {
+  statName: string;
+  statValue: number;
 }
