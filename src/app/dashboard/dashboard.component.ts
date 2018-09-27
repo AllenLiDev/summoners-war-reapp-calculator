@@ -160,7 +160,7 @@ export class DashboardComponent implements OnInit {
       this.primeElementSelected = null;
     }
     // Reset check variable
-    this.primeSelected = '';
+    this.primeSelected = undefined;
   }
 
   // sets the inate stat selected
@@ -174,10 +174,14 @@ export class DashboardComponent implements OnInit {
     let temp: Array<number> = [];
     let hits: Array<number> = [1, 1, 1, 1];
     let count = 0;
-    // check function needed here
 
     // clear rolled stats
     this.rolledStats = [];
+    // check function needed here
+    if(this.primeSelected === undefined){
+      this.rolledStats.push({statName: 'Primary Stat Not Set!', statValue: 0});
+      return;
+    }
     // roll new numbers
     while (temp.length < 4) {
       let newNum = Math.floor((Math.random() * (this.subStats.length)));
