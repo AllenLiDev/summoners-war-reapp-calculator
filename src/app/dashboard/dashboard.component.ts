@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { $, element } from 'protractor';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,9 +19,8 @@ export class DashboardComponent implements OnInit {
   inateValue: number;
   // Statistic var
   totalEff: string = '0';
-  useability: string = '0';
-  triChance: string = '0';
-  quadChance: string = '0';
+  maxEff: string = '0';
+  gemSlot: string = '0';
   // Arrays
   rolledStats: Array<RolledStats> = [];
   primeOne: Array<string> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %'];
@@ -206,7 +204,7 @@ export class DashboardComponent implements OnInit {
     this.rolledStats = [];
     // check function needed here
     if (this.primeSelected === undefined) {
-      this.rolledStats.push({ statName: 'Primary Stat Not Set!', statEff: '', statValue: 0, statRollCount: 0 });
+      this.rolledStats.push({ statName: 'Primary Stat Not Set!', statEff: '', statEffMax: '', statValue: 0, statValueMax: 0, statRollCount: 0 });
       return;
     }
     // roll new numbers
@@ -223,50 +221,62 @@ export class DashboardComponent implements OnInit {
     // popular rolled stats
     temp.forEach((num: number) => {
       let curStat = this.rollStat(this.subStats[num], hits[count]);
-      this.rolledStats.push({ statName: this.subStats[num], statEff: curStat.eff, statValue: curStat.sum, statRollCount: hits[count++] });
+      this.rolledStats.push({ statName: this.subStats[num], statEff: curStat.eff, statEffMax: curStat.maxEff, statValue: curStat.sum, statValueMax: curStat.sumMax, statRollCount: hits[count++] });
     });
-
     this.calcOverallEff();
   }
 
   /// Roll stat based on input: name stat
   rollStat = (type: string, numOfTimes: number) => {
     let sum: number = 0;
+    let sumMax: number = 0;
     let max: number = 0;
     let eff: string;
+    let maxEff: string;
     if (type === 'DEF %' || type === 'HP %' || type === 'ATT %') {
       for (let i = 0; i < numOfTimes; i++) {
         sum += Math.floor((Math.random() * 4) + 5);
+        sumMax = sum + 10;
         max += 8;
       }
     } else if (type === 'DEF +' || type === 'ATT +') {
       for (let i = 0; i < numOfTimes; i++) {
         sum += Math.floor((Math.random() * 11) + 10);
+        sumMax = sum + 30;
         max += 50;
       }
     } else if (type === 'HP +') {
       for (let i = 0; i < numOfTimes; i++) {
         sum += Math.floor((Math.random() * 241) + 135);
+        sumMax = sum + 550;
         max += 800;
       }
     } else if (type === 'SPD' || type === 'CRIT') {
       for (let i = 0; i < numOfTimes; i++) {
         sum += Math.floor((Math.random() * 3) + 4);
+        if (type === 'SPD') {
+          sumMax = sum + 5;
+        } else {
+          sumMax = sum;
+        }
         max += 6;
       }
     } else if (type === 'ACC' || type === 'RES') {
       for (let i = 0; i < numOfTimes; i++) {
         sum += Math.floor((Math.random() * 5) + 4);
+        sumMax = sum;
         max += 8;
       }
     } else if (type === 'CDMG') {
       for (let i = 0; i < numOfTimes; i++) {
         sum += Math.floor((Math.random() * 4) + 4);
+        sumMax = sum;
         max += 7;
       }
     }
     eff = (100 * (sum) / (max)).toFixed(2);
-    return { sum, eff };
+    maxEff = (100 * (sumMax) / (max)).toFixed(2);
+    return { sum, sumMax, eff, maxEff };
   }
 
   getRollColor = (roll) => {
@@ -323,41 +333,52 @@ export class DashboardComponent implements OnInit {
 
   calcOverallEff = () => {
     let total: number = 0;
+    let max: number = 0;
     for (let i = 0; i < 4; i++) {
       total += parseFloat(this.rolledStats[i].statEff) * this.rolledStats[i].statRollCount;
+      max += parseFloat(this.rolledStats[i].statEffMax) * this.rolledStats[i].statRollCount;
     }
+    total += this.calcInate();
+    max += this.calcInate();
+    this.totalEff = (total / 8).toFixed(2);
+    this.maxEff = (max / 8).toFixed(2);
+  }
+
+  calcInate = () => {
     if (this.inateSelected != 'None') {
-      console.log(this.inateValue);
       if (this.inateSelected === 'DEF +' || this.inateSelected === 'Att +') {
-        total += 25 * (this.inateValue / 20);
+        return 25 * (this.inateValue / 20);
       }
       else if (this.inateSelected === 'DEF %' || this.inateSelected === 'ATT %' || this.inateSelected === 'HP %') {
-        total += 25 * (this.inateValue / 8);
+        return 25 * (this.inateValue / 8);
       }
       else if (this.inateSelected === 'HP +') {
-        total += 25 * (this.inateValue / 375);
+        return 25 * (this.inateValue / 375);
       }
       else if (this.inateSelected === 'SPD' || this.inateSelected === 'CRIT') {
-        total += 25 * (this.inateValue / 6);
+        return 25 * (this.inateValue / 6);
       }
       else if (this.inateSelected === 'CDMG') {
-        total += 25 * (this.inateValue / 7);
+        return 25 * (this.inateValue / 7);
       }
       else if (this.inateSelected === 'ACC' || this.inateSelected === 'RES') {
-        total += 25 * (this.inateValue / 8);
+        return 25 * (this.inateValue / 8);
       }
     }
-    this.totalEff = (total / 8).toFixed(2);
+    return 0;
   }
 
   inateSet = (value: number) => {
     this.inateValue = value;
   }
+
 }
 
 export interface RolledStats {
   statName: string;
   statEff: string;
+  statEffMax: string;
   statValue: number;
+  statValueMax: number;
   statRollCount: number;
 }
