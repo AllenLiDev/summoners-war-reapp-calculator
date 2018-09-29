@@ -9,9 +9,42 @@
         {{ dateObj | date:'fullDate' }}
       </div>
     </div>
-    <!-- Section Content -->
+    <!-- Select new Data -->
     <div class="row">
-
+      <div class="col-12 section-content">
+        <input class="text-right" type="file" id="file" name="file" accept=".json" (change)="onChange($event)">
+      </div>
+    </div>
+    <!-- Sub Menu -->
+    <div class="row">
+      <div (click)="doIt()" class="col-md-6 section-content">
+        Only Legend Runes will be displayed
+      </div>
+      <div class="col-md-6 section-content">
+        Show Equipped Runes on/off
+      </div>
+    </div>
+    <!-- Rune Data -->
+    <div class="row">
+      <table class="table section-content">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Slot</th>
+            <th scope="col">Stat</th>
+            <th scope="col">Inate</th>
+            <th scope="col">Pool</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
