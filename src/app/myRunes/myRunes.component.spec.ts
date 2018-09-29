@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShiftpickComponent } from './shiftpick.component';
+import { MyRunesComponent } from './myRunes.component';
 
-describe('ShiftpickComponent', () => {
-  let component: ShiftpickComponent;
-  let fixture: ComponentFixture<ShiftpickComponent>;
+describe('MyRunesComponent', () => {
+  let component: MyRunesComponent;
+  let fixture: ComponentFixture<MyRunesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShiftpickComponent ]
+      declarations: [ MyRunesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShiftpickComponent);
+    fixture = TestBed.createComponent(MyRunesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

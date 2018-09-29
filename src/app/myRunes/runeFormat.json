@@ -1,0 +1,106 @@
+{
+    // id
+      "rune_id": 19691445536, 
+    // user id
+      "wizard_id": 3235887,
+    //   2 = inventory
+      "occupied_type": 2,
+    //   monster ID
+      "occupied_id": 0,
+    //   rune slot 1 - 6
+      "slot_no": 1,
+    //   upgrade 1 - 5 based on color guide kind of useless
+      "rank": 5,
+    //   stars
+      "class": 6,
+    //   rune type 1 - ?
+      "set_id": 1,
+    //   upgrade limit 15
+      "upgrade_limit": 15,
+    //   current upgrade
+      "upgrade_curr": 0,
+    //   ? com2us calculated rune wb value??
+      "base_value": 421610,
+    //   sell value mana
+      "sell_value": 21080,
+    //   Primary [stattype: 1 - ?, value: ]
+      "pri_eff": [
+        3,
+        22
+      ],
+    //   Inate [ stattype: 1 - ?, value: ]
+      "prefix_eff": [
+        10,
+        4
+      ],
+    //  stats [ [1],[2],[3],[4] ]
+    // each [stattype: 1 - ?], [ value: ], [gem: true/false], [grind; value]
+      "sec_eff": [
+        [
+          1,
+          347,
+          0,
+          0
+        ],
+        [
+          11,
+          8,
+          0,
+          0
+        ],
+        [
+          9,
+          5,
+          0,
+          0
+        ],
+        [
+          12,
+          8,
+          0,
+          0
+        ]
+      ],
+    //   1 - 5 normal / green / rare /hero /legend
+      "extra": 5
+    }
+
+    runetype [
+        1:  HP +
+        2:  HP%
+        3:  ATT +
+        4:  ATT %
+        5:  DEF +
+        6:  DEF %
+        7:  
+        8:  SPD
+        9:  CRIT
+        10: CDMG
+        11: RES
+        12: ACC
+
+    ]
+
+    SETID [
+        "Energy": [2, "HP%", 15],
+        "Fatal": [4, "ATK%", 35],
+        "Blade": [2, "CRate", 12],
+        "Rage": [4, "CDmg", 40],
+        "Swift": [4, "SPD%", 25],
+        "Focus": [2, "ACC", 20],
+        "Guard": [2, "DEF%", 15],
+        "Endure": [2, "RES", 20],
+        "Violent": [4, "", ""],
+        "Will": [2, "", ""],
+        "Nemesis": [2, "", ""],
+        "Shield": [2, "", ""],
+        "Revenge": [2, "", ""],
+        "Despair": [4, "", ""],
+        "Vampire": [4, "", ""],
+        "Destroy": [2, "", ""],
+        "Fight": [2, "ATK%", 8],
+        "Determination": [2, "DEF%", 8],
+        "Enhance": [2, "HP%", 8],
+        "Accuracy": [2, "ACC", 10],
+        "Tolerance": [2, "RES", 10]
+    ]
