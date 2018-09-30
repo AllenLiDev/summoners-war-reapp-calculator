@@ -26,24 +26,54 @@
     </div>
     <!-- Rune Data -->
     <div class="row">
-      <table class="table section-content">
+      <!-- <table class="table section-content">
         <thead class="thead-light">
           <tr>
-            <th scope="col">Type</th>
             <th scope="col">Slot</th>
+            <th scope="col">Type</th>
             <th scope="col">Stat</th>
             <th scope="col">Inate</th>
-            <th scope="col">Pool</th>
+            <th scope="col">Stats</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+          <tr *ngFor="let rune of runeDataActive">
+            <td>{{rune.slot_no}}</td>
+            <td>{{rune.set_id}}</td>
+            <td>{{rune.primary_stat.type}}</td>
+            <td>{{rune.inate_stat.type}}</td>
+            <td>{{rune.sub_stats}}</td>
           </tr>
         </tbody>
+      </table> -->
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="slot_no">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Slot # </th>
+          <td mat-cell *matCellDef="let element"> {{element.slot_no}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="set_id">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Rune Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.set_id}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="primary_stat.type">
+          <th mat-header-cell *matHeaderCellDef> Stat Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.primary_stat.type}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="inate_stat.type">
+          <th mat-header-cell *matHeaderCellDef> Inate Stat </th>
+          <td mat-cell *matCellDef="let element"> {{element.inate_stat.type}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
   </div>

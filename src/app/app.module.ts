@@ -9,6 +9,11 @@ import { ShiftsComponent } from './shifts/shifts.component';
 import { CoverageComponent } from './coverage/coverage.component';
 import { MyRunesComponent } from './myRunes/myRunes.component';
 
+// angular material module dependencies
+import { BrowserAnimationsModule } from  '@angular/platform-browser/animations'
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +25,10 @@ import { MyRunesComponent } from './myRunes/myRunes.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatTableModule,
+    BrowserAnimationsModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]
