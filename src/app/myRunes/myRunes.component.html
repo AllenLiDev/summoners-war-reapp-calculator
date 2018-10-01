@@ -26,26 +26,9 @@
     </div>
     <!-- Rune Data -->
     <div class="row">
-      <!-- <table class="table section-content">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Slot</th>
-            <th scope="col">Type</th>
-            <th scope="col">Stat</th>
-            <th scope="col">Inate</th>
-            <th scope="col">Stats</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let rune of runeDataActive">
-            <td>{{rune.slot_no}}</td>
-            <td>{{rune.set_id}}</td>
-            <td>{{rune.primary_stat.type}}</td>
-            <td>{{rune.inate_stat.type}}</td>
-            <td>{{rune.sub_stats}}</td>
-          </tr>
-        </tbody>
-      </table> -->
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Rune Type">
+      </mat-form-field>
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <!-- Position Column -->

@@ -3,6 +3,9 @@
 // Bootstrap Mixin for breakpoints
 @import "../node_modules/bootstrap/scss/bootstrap-grid.scss";
 
+// Material design 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 
 // Global Colors
 $blue: #CAEBF2;

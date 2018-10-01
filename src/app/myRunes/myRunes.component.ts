@@ -29,6 +29,7 @@ export class MyRunesComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
+  
   ngOnInit() {
     this.dataSource.sort = this.sort;
   }
@@ -42,6 +43,10 @@ export class MyRunesComponent implements OnInit {
       this.runeDataNew = JSON.parse(event.target.result);
     };
     reader.readAsText(file);
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   doIt = () => {
@@ -60,39 +65,39 @@ export class MyRunesComponent implements OnInit {
           || ((this.runeDataNew.runes[i].slot_no == 2 || this.runeDataNew.runes[i].slot_no == 4 || this.runeDataNew.runes[i].slot_no == 6)
             && (this.runeDataNew.runes[i].pri_eff != 1 || this.runeDataNew.runes[i].pri_eff != 3 || this.runeDataNew.runes[i].pri_eff != 5))) {
           let tempRune: Rune = {
-            set_id: this.runeDataNew.runes[i].set_id,
+            set_id: this.getSet(this.runeDataNew.runes[i].set_id),
             slot_no: this.runeDataNew.runes[i].slot_no,
             occupied_id: this.runeDataNew.runes[i].occupied_id,
             occupied_type: this.runeDataNew.runes[i].occupied_type,
             primary_stat: {
-              type: this.runeDataNew.runes[i].pri_eff[0],
+              type: this.getStat(this.runeDataNew.runes[i].pri_eff[0]),
               value: this.runeDataNew.runes[i].pri_eff[1]
             },
             inate_stat: {
-              type: this.runeDataNew.runes[i].prefix_eff[0],
+              type: this.getStat(this.runeDataNew.runes[i].prefix_eff[0]),
               value: this.runeDataNew.runes[i].prefix_eff[1]
             },
             sub_stats: {
               0: {
-                type: this.runeDataNew.runes[i].sec_eff[0][0],
+                type: this.getStat(this.runeDataNew.runes[i].sec_eff[0][0]),
                 value: this.runeDataNew.runes[i].sec_eff[0][1],
                 gem: this.runeDataNew.runes[i].sec_eff[0][2],
                 grind: this.runeDataNew.runes[i].sec_eff[0][3]
               },
               1: {
-                type: this.runeDataNew.runes[i].sec_eff[1][0],
+                type: this.getStat(this.runeDataNew.runes[i].sec_eff[1][0]),
                 value: this.runeDataNew.runes[i].sec_eff[1][1],
                 gem: this.runeDataNew.runes[i].sec_eff[1][2],
                 grind: this.runeDataNew.runes[i].sec_eff[1][3]
               },
               2: {
-                type: this.runeDataNew.runes[i].sec_eff[2][0],
+                type: this.getStat(this.runeDataNew.runes[i].sec_eff[2][0]),
                 value: this.runeDataNew.runes[i].sec_eff[2][1],
                 gem: this.runeDataNew.runes[i].sec_eff[2][2],
                 grind: this.runeDataNew.runes[i].sec_eff[2][3]
               },
               3: {
-                type: this.runeDataNew.runes[i].sec_eff[3][0],
+                type: this.getStat(this.runeDataNew.runes[i].sec_eff[3][0]),
                 value: this.runeDataNew.runes[i].sec_eff[3][1],
                 gem: this.runeDataNew.runes[i].sec_eff[3][2],
                 grind: this.runeDataNew.runes[i].sec_eff[3][3]
@@ -103,21 +108,100 @@ export class MyRunesComponent implements OnInit {
         }
       }
     }
+    console.log(this.runeDataActive);
     this.dataSource = new MatTableDataSource(this.runeDataActive);
+  }
+
+  getSet = (num: number) => {
+    switch (num) {
+      case 1:
+        return 'Energy';
+      case 2:
+        return 'Fatal';
+      case 3:
+        return 'Blade';
+      case 4:
+        return 'Rage';
+      case 5:
+        return 'Swift';
+      case 6:
+        return 'Focus';
+      case 7:
+        return 'Guard';
+      case 8:
+        return 'Endure';
+      case 9:
+        return 'Violent';
+      case 10:
+        return 'Will';
+      case 11:
+        return 'Nemesis';
+      case 12:
+        return 'Shield';
+      case 13:
+        return 'Revenge';
+      case 14:
+        return 'Despair';
+      case 15:
+        return 'Vampire';
+      case 16:
+        return 'Destroy';
+      case 17:
+        return 'Fight';
+      case 18:
+        return 'Determination';
+      case 19:
+        return 'Enhance';
+      case 20:
+        return 'Accuracy';
+      case 21:
+        return 'Tolerance';
+    }
+    return 'Null';
+  }
+
+  getStat = (stat: number) => {
+    switch (stat) {
+      case 1:
+        return 'HP +';
+      case 2:
+        return 'HP %';
+      case 3:
+        return 'ATT +';
+      case 4:
+        return 'ATT %';
+      case 5:
+        return 'DEF +';
+      case 6:
+        return 'DEF %';
+      case 7:
+        return 'NULL';
+      case 8:
+        return 'SPD';
+      case 9:
+        return 'CRIT';
+      case 10:
+        return 'CDMG';
+      case 11:
+        return 'RES';
+      case 12:
+        return 'ACC';
+    }
+    return 'Null';
   }
 }
 
 export interface Rune {
-  set_id: number;
+  set_id: string;
   slot_no: number;
   occupied_id: number;
   occupied_type: number;
   primary_stat: {
-    type: number;
+    type: string;
     value: number;
   };
   inate_stat: {
-    type: number;
+    type: string;
     value: number
   };
   sub_stats: {
@@ -129,51 +213,31 @@ export interface Rune {
 }
 
 export interface Stat {
-  type: number;
+  type: string;
   value: number;
-  gem: boolean;
+  gem: number;
   grind: number;
 }
 
 const TEST_DATA: Rune[] = [
   {
     inate_stat: {
-      type: 10,
+      type: '',
       value: 4
     },
     occupied_id: 0,
     occupied_type: 2,
     primary_stat: {
-      type: 3,
+      type: '',
       value: 22
     },
-    set_id: 1,
+    set_id: '',
     slot_no: 1,
     sub_stats: {
-      0: { type: 1, value: 347, gem: true, grind: 0 },
-      1: { type: 11, value: 8, gem: true, grind: 0 },
-      2: { type: 9, value: 5, gem: true, grind: 0 },
-      3: { type: 12, value: 8, gem: true, grind: 0 },
-    }
-  },
-  {
-    inate_stat: {
-      type: 1,
-      value: 4
-    },
-    occupied_id: 0,
-    occupied_type: 2,
-    primary_stat: {
-      type: 1,
-      value: 22
-    },
-    set_id: 2,
-    slot_no: 2,
-    sub_stats: {
-      0: { type: 1, value: 347, gem: true, grind: 0 },
-      1: { type: 11, value: 8, gem: true, grind: 0 },
-      2: { type: 9, value: 5, gem: true, grind: 0 },
-      3: { type: 12, value: 8, gem: true, grind: 0 },
+      0: { type: '', value: 347, gem: 0, grind: 0 },
+      1: { type: '', value: 8, gem: 0, grind: 0 },
+      2: { type: '', value: 5, gem: 0, grind: 0 },
+      3: { type: '', value: 8, gem: 0, grind: 0 },
     }
   }
 ];
