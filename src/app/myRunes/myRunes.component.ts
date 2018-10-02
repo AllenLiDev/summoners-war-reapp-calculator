@@ -21,7 +21,7 @@ export class MyRunesComponent implements OnInit {
   dateObj: Date = new Date();
   runeDataNew: any;
   runeDataActive: Array<Rune> = new Array();
-  dataSource = new MatTableDataSource(TEST_DATA);
+  dataSource;
   fileTarget: EventTarget;
   legendRunes: Rune;
 
@@ -29,9 +29,14 @@ export class MyRunesComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  
+
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    if (localStorage.getItem('runeData')) {
+      this.runeDataNew = JSON.parse(localStorage.getItem('runeData'));
+      this.doIt();
+    } else{
+      this.dataSource = new Array();
+    }
   }
 
   // attached to input
@@ -41,6 +46,7 @@ export class MyRunesComponent implements OnInit {
     reader.onload = (event) => {
       // The file's data will be stored here
       this.runeDataNew = JSON.parse(event.target.result);
+      localStorage.setItem('runeData', event.target.result);
     };
     reader.readAsText(file);
   }
@@ -108,7 +114,7 @@ export class MyRunesComponent implements OnInit {
         }
       }
     }
-    console.log(this.runeDataActive);
+    // console.log(this.runeDataActive);
     this.dataSource = new MatTableDataSource(this.runeDataActive);
   }
 
