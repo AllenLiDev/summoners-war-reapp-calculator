@@ -33,8 +33,9 @@ export class MyRunesComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem('runeData')) {
       this.runeDataNew = JSON.parse(localStorage.getItem('runeData'));
-      this.doIt();
-    } else{
+      this.findLegendRunes();
+      this.dataSource.sort = this.sort;
+    } else {
       this.dataSource = new Array();
     }
   }
@@ -63,6 +64,7 @@ export class MyRunesComponent implements OnInit {
   }
 
   findLegendRunes = () => {
+    this.runeDataActive = [];
     for (let i = 0; i < this.runeDataNew.runes.length; i++) {
       // is extra = 5 = legend and class = 6 = 6 stars
       if (this.runeDataNew.runes[i].extra == 5 && this.runeDataNew.runes[i].class == 6) {
@@ -123,47 +125,51 @@ export class MyRunesComponent implements OnInit {
       case 1:
         return 'Energy';
       case 2:
-        return 'Fatal';
+        return 'Guard';
       case 3:
-        return 'Blade';
-      case 4:
-        return 'Rage';
-      case 5:
         return 'Swift';
+      case 4:
+        return 'Blade';
+      case 5:
+        return 'Rage';
       case 6:
         return 'Focus';
       case 7:
-        return 'Guard';
-      case 8:
         return 'Endure';
+      case 8:
+        return 'Fatal';
       case 9:
-        return 'Violent';
+        return '';
       case 10:
-        return 'Will';
-      case 11:
-        return 'Nemesis';
-      case 12:
-        return 'Shield';
-      case 13:
-        return 'Revenge';
-      case 14:
         return 'Despair';
-      case 15:
+      case 11:
         return 'Vampire';
+      case 12:
+        return '';
+      case 13:
+        return 'Violent';
+      case 14:
+        return 'Nemesis';
+      case 15:
+        return 'Will';
       case 16:
-        return 'Destroy';
+        return 'Shield';
       case 17:
-        return 'Fight';
+        return 'Revenge';
       case 18:
-        return 'Determination';
+        return 'Destroy';
       case 19:
-        return 'Enhance';
+        return 'Fight';
       case 20:
-        return 'Accuracy';
+        return 'Determination';
       case 21:
+        return 'Enhance';
+      case 22:
+        return 'Accuracy';
+      case 23:
         return 'Tolerance';
     }
-    return 'Null';
+    return '-';
   }
 
   getStat = (stat: number) => {
