@@ -5,21 +5,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 @Component({
   selector: 'app-MyRunes',
   templateUrl: './myRunes.component.html',
-  styleUrls: ['./myRunes.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+  styleUrls: ['./myRunes.component.scss']
 })
 export class MyRunesComponent implements OnInit {
   // table var
-  displayedColumns: string[] = ['slot_no', 'set_id', 'primary_stat.type', 'inate_stat.type'];
+  displayedColumns: string[] = ['slot_no', 'set_id', 'primary_stat.type', 'inate_stat.type', 'upgrade', 'efficiency'];
   // date
   dateObj: Date = new Date();
-  dataDate: string = 'No Data';
   runeDataNew: any;
   runeDataActive: Array<Rune> = new Array();
   dataSource;
@@ -40,9 +32,21 @@ export class MyRunesComponent implements OnInit {
     } else {
       this.dataSource = new Array();
     }
-    this.dataSource.filterPredicate = (data: Rune, filter: string) => {
-      return (data.set_id.toLowerCase().indexOf(filter) !== -1 ||
-        data.primary_stat.type.toLowerCase().indexOf(filter) !== -1);
+    this.dataSource.filterPredicate = (data: Rune, filter: Array<string>) => {
+      if (filter.length == 1) {
+        return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 ||
+          data.primary_stat.type.toLowerCase().indexOf(filter[0]) !== -1 ||
+          data.inate_stat.type.toLowerCase().indexOf(filter[0]) !== -1);
+      } else if (filter.length == 2) {
+        return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 &&
+          data.primary_stat.type.toLowerCase().indexOf(filter[1]) !== -1) ||
+          (data.primary_stat.type.toLowerCase().indexOf(filter[0]) !== -1 &&
+          data.inate_stat.type.toLowerCase().indexOf(filter[1]) !== -1);
+      } else if (filter.length >= 3) {
+        return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 &&
+          data.primary_stat.type.toLowerCase().indexOf(filter[1]) !== -1 &&
+          data.inate_stat.type.toLowerCase().indexOf(filter[2]) !== -1);
+      }
     };
   }
 
@@ -61,12 +65,13 @@ export class MyRunesComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
+    let temp = filterValue.toLowerCase().split(' ', 3);
+    this.dataSource.filter = temp;
   }
 
   findLegendRunes = () => {
     this.runeDataActive = [];
-    this.dataDate = this.runeDataNew.daily_reward_info.month;
     for (let i = 0; i < this.runeDataNew.runes.length; i++) {
       // is extra = 5 = legend and class = 6 = 6 stars
       if (this.runeDataNew.runes[i].extra == 5 && this.runeDataNew.runes[i].class == 6) {
@@ -112,7 +117,9 @@ export class MyRunesComponent implements OnInit {
                 gem: this.runeDataNew.runes[i].sec_eff[3][2],
                 grind: this.runeDataNew.runes[i].sec_eff[3][3]
               }
-            }
+            },
+            upgrade: this.runeDataNew.runes[i].upgrade_curr,
+            efficiency: this.calcEff(this.runeDataNew.runes[i])
           }
           this.runeDataActive.push(tempRune);
         }
@@ -120,6 +127,53 @@ export class MyRunesComponent implements OnInit {
     }
     // console.log(this.runeDataActive);
     this.dataSource = new MatTableDataSource(this.runeDataActive);
+  }
+
+  // calculate efficiency of rune based on stats
+  calcEff = (rune) => {
+    let eff: number = 0;
+    let pre: string = this.getStat(rune.prefix_eff[0]);
+    let temp: string;
+
+    for (let i = 0; i < 4; i++) {
+      let type = this.getStat(rune.sec_eff[i][0]);
+      if (type === 'DEF %' || type === 'HP %' || type === 'ATT %') {
+        eff += 100 * (rune.sec_eff[i][1] / 8);
+      } else if (type === 'DEF +' || type === 'ATT +') {
+        eff += 100 * (rune.sec_eff[i][1] / 20);
+      } else if (type === 'HP +') {
+        eff += 100 * (rune.sec_eff[i][1] / 355);
+      } else if (type === 'SPD' || type === 'CRIT') {
+        eff += 100 * (rune.sec_eff[i][1] / 6);
+      } else if (type === 'ACC' || type === 'RES') {
+        eff += 100 * (rune.sec_eff[i][1] / 8);
+      } else if (type === 'CDMG') {
+        eff += 100 * (rune.sec_eff[i][1] / 7);
+      }
+    }
+
+    if (pre != '-') {
+      if (pre === 'DEF +' || pre === 'Att +') {
+        eff += 25 * (rune.prefix_eff[1] / 20);
+      }
+      else if (pre === 'DEF %' || pre === 'ATT %' || pre === 'HP %') {
+        eff += 25 * (rune.prefix_eff[1] / 8);
+      }
+      else if (pre === 'HP +') {
+        eff += 25 * (rune.prefix_eff[1] / 375);
+      }
+      else if (pre === 'SPD' || pre === 'CRIT') {
+        eff += 25 * (rune.prefix_eff[1] / 6);
+      }
+      else if (pre === 'CDMG') {
+        eff += 25 * (rune.prefix_eff[1] / 7);
+      }
+      else if (pre === 'ACC' || pre === 'RES') {
+        eff += 25 * (rune.prefix_eff[1] / 8);
+      }
+    }
+    temp = (eff / 8).toFixed(2);
+    return temp;
   }
 
   getSet = (num: number) => {
@@ -201,7 +255,18 @@ export class MyRunesComponent implements OnInit {
       case 12:
         return 'ACC';
     }
-    return 'Null';
+    return '-';
+  }
+
+  getEffColor = (eff: string) => {
+    let percent: number = parseInt(eff);
+    if (percent > 80) {
+      return 'effColorHigh';
+    } else if (percent > 67.5) {
+      return 'effColorMed';
+    } else {
+      return 'effColorLow';
+    }
   }
 }
 
@@ -223,7 +288,9 @@ export interface Rune {
     1: Stat;
     2: Stat;
     3: Stat;
-  }
+  };
+  upgrade: number;
+  efficiency: string;
 }
 
 export interface Stat {
@@ -232,26 +299,3 @@ export interface Stat {
   gem: number;
   grind: number;
 }
-
-const TEST_DATA: Rune[] = [
-  {
-    inate_stat: {
-      type: '',
-      value: 4
-    },
-    occupied_id: 0,
-    occupied_type: 2,
-    primary_stat: {
-      type: '',
-      value: 22
-    },
-    set_id: '',
-    slot_no: 1,
-    sub_stats: {
-      0: { type: '', value: 347, gem: 0, grind: 0 },
-      1: { type: '', value: 8, gem: 0, grind: 0 },
-      2: { type: '', value: 5, gem: 0, grind: 0 },
-      3: { type: '', value: 8, gem: 0, grind: 0 },
-    }
-  }
-];
