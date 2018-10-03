@@ -1,5 +1,5 @@
 <div class="shell-padding">
-  <div class="container-fluid">
+  <div class="container">
     <!-- Section Header -->
     <div class="row justify-content-between section-header">
       <div>
@@ -11,17 +11,30 @@
     </div>
     <!-- Select new Data -->
     <div class="row">
-      <div class="col-12 section-content">
+      <div class="col-md-6 section-content">
         <input class="text-right" type="file" id="file" name="file" accept=".json" (change)="onChange($event)">
+      </div>
+      <div class="col-md-6 section-content">
+        Using Data From - {{dataDate}}
       </div>
     </div>
     <!-- Sub Menu -->
     <div class="row">
-      <div (click)="doIt()" class="col-md-6 section-content">
+      <div class="col-md-6 section-content">
         Only Legend Runes will be displayed
       </div>
       <div class="col-md-6 section-content">
-        Show Equipped Runes on/off
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-secondary">
+            <input type="radio" name="options" id="option1" autocomplete="off"> Both
+          </label>
+          <label class="btn btn-secondary active">
+            <input type="radio" name="options" id="option2" autocomplete="off" checked> Inventory
+          </label>
+          <label class="btn btn-secondary">
+            <input type="radio" name="options" id="option3" autocomplete="off"> Equipped
+          </label>
+        </div>
       </div>
     </div>
     <!-- Rune Data -->
@@ -31,27 +44,33 @@
       </mat-form-field>
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-        <!-- Position Column -->
+        <!-- Slot Column -->
         <ng-container matColumnDef="slot_no">
           <th mat-header-cell mat-sort-header *matHeaderCellDef> Slot # </th>
           <td mat-cell *matCellDef="let element"> {{element.slot_no}} </td>
         </ng-container>
 
-        <!-- Name Column -->
+        <!-- Type Column -->
         <ng-container matColumnDef="set_id">
           <th mat-header-cell mat-sort-header *matHeaderCellDef> Rune Type </th>
           <td mat-cell *matCellDef="let element"> {{element.set_id}} </td>
         </ng-container>
 
-        <!-- Weight Column -->
+        <!-- Prime Column -->
         <ng-container matColumnDef="primary_stat.type">
           <th mat-header-cell *matHeaderCellDef> Stat Type </th>
           <td mat-cell *matCellDef="let element"> {{element.primary_stat.type}} </td>
         </ng-container>
 
-        <!-- Symbol Column -->
+        <!-- Inate Column -->
         <ng-container matColumnDef="inate_stat.type">
           <th mat-header-cell *matHeaderCellDef> Inate Stat </th>
+          <td mat-cell *matCellDef="let element"> {{element.inate_stat.type}} </td>
+        </ng-container>
+
+        <!-- Eff Column -->
+        <ng-container matColumnDef="priority">
+          <th mat-header-cell *matHeaderCellDef> Priority </th>
           <td mat-cell *matCellDef="let element"> {{element.inate_stat.type}} </td>
         </ng-container>
 
@@ -60,4 +79,4 @@
       </table>
     </div>
   </div>
-</div>
+</div>`

@@ -19,13 +19,15 @@ export class MyRunesComponent implements OnInit {
   displayedColumns: string[] = ['slot_no', 'set_id', 'primary_stat.type', 'inate_stat.type'];
   // date
   dateObj: Date = new Date();
+  dataDate: string = 'No Data';
   runeDataNew: any;
   runeDataActive: Array<Rune> = new Array();
   dataSource;
   fileTarget: EventTarget;
   legendRunes: Rune;
 
-  constructor() { }
+  constructor() {
+  }
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -38,6 +40,10 @@ export class MyRunesComponent implements OnInit {
     } else {
       this.dataSource = new Array();
     }
+    this.dataSource.filterPredicate = (data: Rune, filter: string) => {
+      return (data.set_id.toLowerCase().indexOf(filter) !== -1 ||
+        data.primary_stat.type.toLowerCase().indexOf(filter) !== -1);
+    };
   }
 
   // attached to input
@@ -50,21 +56,17 @@ export class MyRunesComponent implements OnInit {
       localStorage.setItem('runeData', event.target.result);
     };
     reader.readAsText(file);
+    this.findLegendRunes();
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  doIt = () => {
-    // console.log(this.runeDataNew.runes);
-    // console.log(this.runeDataNew.unit_list);
-    this.findLegendRunes();
-    this.dataSource.sort = this.sort;
-  }
-
   findLegendRunes = () => {
     this.runeDataActive = [];
+    this.dataDate = this.runeDataNew.daily_reward_info.month;
     for (let i = 0; i < this.runeDataNew.runes.length; i++) {
       // is extra = 5 = legend and class = 6 = 6 stars
       if (this.runeDataNew.runes[i].extra == 5 && this.runeDataNew.runes[i].class == 6) {

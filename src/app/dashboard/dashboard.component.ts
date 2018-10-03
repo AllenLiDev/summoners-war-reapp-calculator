@@ -29,10 +29,10 @@ export class DashboardComponent implements OnInit {
   subStats: Array<string> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
   statTypes: Array<string> = ['ATT +', 'ATT %', 'DEF +', 'DEF %', 'HP +', 'HP %', 'SPD', 'CRIT', 'CDMG', 'RES', 'ACC'];
   slotNumbers: Array<string> = ['Slot 1', 'Slot 2', 'Slot 3', 'Slot 4', 'Slot 5', 'Slot 6'];
-  constructor() { }
+  
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   // onclick function to set the Slot
   setSlotSelected = (slotNum: number, event: Event) => {
