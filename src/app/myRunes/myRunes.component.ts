@@ -1,15 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-MyRunes',
   templateUrl: './myRunes.component.html',
-  styleUrls: ['./myRunes.component.scss']
+  styleUrls: ['./myRunes.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class MyRunesComponent implements OnInit {
   // table var
-  displayedColumns: string[] = ['slot_no', 'set_id', 'primary_stat.type', 'inate_stat.type', 'upgrade', 'efficiency'];
+  displayedColumns: string[] = ['slot_no', 'set_id', 'primary_stat_type', 'inate_stat_type', 'upgrade', 'efficiency'];
   // date
   dateObj: Date = new Date();
   runeDataNew: any;
@@ -17,6 +25,7 @@ export class MyRunesComponent implements OnInit {
   dataSource;
   fileTarget: EventTarget;
   legendRunes: Rune;
+  expandedElement: Rune;
 
   constructor() {
   }
@@ -25,6 +34,7 @@ export class MyRunesComponent implements OnInit {
 
 
   ngOnInit() {
+    // load old data or init new data source
     if (localStorage.getItem('runeData')) {
       this.runeDataNew = JSON.parse(localStorage.getItem('runeData'));
       this.findLegendRunes();
@@ -32,22 +42,25 @@ export class MyRunesComponent implements OnInit {
     } else {
       this.dataSource = new Array();
     }
+    // filter settings
     this.dataSource.filterPredicate = (data: Rune, filter: Array<string>) => {
       if (filter.length == 1) {
         return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 ||
-          data.primary_stat.type.toLowerCase().indexOf(filter[0]) !== -1 ||
-          data.inate_stat.type.toLowerCase().indexOf(filter[0]) !== -1);
+          data.primary_stat_type.toLowerCase().indexOf(filter[0]) !== -1 ||
+          data.inate_stat_type.toLowerCase().indexOf(filter[0]) !== -1);
       } else if (filter.length == 2) {
         return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 &&
-          data.primary_stat.type.toLowerCase().indexOf(filter[1]) !== -1) ||
-          (data.primary_stat.type.toLowerCase().indexOf(filter[0]) !== -1 &&
-          data.inate_stat.type.toLowerCase().indexOf(filter[1]) !== -1);
+          data.primary_stat_type.toLowerCase().indexOf(filter[1]) !== -1) ||
+          (data.primary_stat_type.toLowerCase().indexOf(filter[0]) !== -1 &&
+            data.inate_stat_type.toLowerCase().indexOf(filter[1]) !== -1);
       } else if (filter.length >= 3) {
         return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 &&
-          data.primary_stat.type.toLowerCase().indexOf(filter[1]) !== -1 &&
-          data.inate_stat.type.toLowerCase().indexOf(filter[2]) !== -1);
+          data.primary_stat_type.toLowerCase().indexOf(filter[1]) !== -1 &&
+          data.inate_stat_type.toLowerCase().indexOf(filter[2]) !== -1);
       }
     };
+    // set color class
+
   }
 
   // attached to input
@@ -84,14 +97,10 @@ export class MyRunesComponent implements OnInit {
             slot_no: this.runeDataNew.runes[i].slot_no,
             occupied_id: this.runeDataNew.runes[i].occupied_id,
             occupied_type: this.runeDataNew.runes[i].occupied_type,
-            primary_stat: {
-              type: this.getStat(this.runeDataNew.runes[i].pri_eff[0]),
-              value: this.runeDataNew.runes[i].pri_eff[1]
-            },
-            inate_stat: {
-              type: this.getStat(this.runeDataNew.runes[i].prefix_eff[0]),
-              value: this.runeDataNew.runes[i].prefix_eff[1]
-            },
+            primary_stat_type: this.getStat(this.runeDataNew.runes[i].pri_eff[0]),
+            primary_stat_value: this.runeDataNew.runes[i].pri_eff[1],
+            inate_stat_type: this.getStat(this.runeDataNew.runes[i].prefix_eff[0]),
+            inate_stat_value: this.runeDataNew.runes[i].prefix_eff[1],
             sub_stats: {
               0: {
                 type: this.getStat(this.runeDataNew.runes[i].sec_eff[0][0]),
@@ -268,6 +277,21 @@ export class MyRunesComponent implements OnInit {
       return 'effColorLow';
     }
   }
+
+  getType = (stat: string) => {
+    if (!(stat === 'DEF +' || stat === 'ATT +' || stat === 'HP +' || stat === 'SPD')) {
+      return '%';
+    } else {
+      return;
+    }
+  }
+
+  isGem = (input: number) => {
+    if(input){
+      return '<i class="far fa-gem"></i>';
+    }
+    return;
+  }
 }
 
 export interface Rune {
@@ -275,14 +299,10 @@ export interface Rune {
   slot_no: number;
   occupied_id: number;
   occupied_type: number;
-  primary_stat: {
-    type: string;
-    value: number;
-  };
-  inate_stat: {
-    type: string;
-    value: number
-  };
+  primary_stat_type: string;
+  primary_stat_value: number;
+  inate_stat_type: string;
+  inate_stat_value: number;
   sub_stats: {
     0: Stat;
     1: Stat;

@@ -43,47 +43,63 @@
       <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-        <!-- Slot Column -->
-        <ng-container matColumnDef="slot_no">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Slot # </th>
-          <td mat-cell *matCellDef="let element"> {{element.slot_no}} </td>
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> {{column}} </th>
+          <td [ngClass]="column == 'efficiency'? getEffColor(element.efficiency) : null" mat-cell *matCellDef="let element">
+            {{element[column]}} </td>
         </ng-container>
 
-        <!-- Type Column -->
-        <ng-container matColumnDef="set_id">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Rune Type </th>
-          <td mat-cell *matCellDef="let element"> {{element.set_id}} </td>
-        </ng-container>
-
-        <!-- Prime Column -->
-        <ng-container matColumnDef="primary_stat.type">
-          <th mat-header-cell *matHeaderCellDef> Stat Type </th>
-          <td mat-cell *matCellDef="let element"> {{element.primary_stat.type}} </td>
-        </ng-container>
-
-        <!-- Inate Column -->
-        <ng-container matColumnDef="inate_stat.type">
-          <th mat-header-cell *matHeaderCellDef> Inate Stat </th>
-          <td mat-cell *matCellDef="let element"> {{element.inate_stat.type}} </td>
-        </ng-container>
-
-        <!-- Inate Column -->
-        <ng-container matColumnDef="upgrade">
-          <th mat-header-cell *matHeaderCellDef> Upgrade </th>
-          <td mat-cell *matCellDef="let element"> {{element.upgrade}} / 15 </td>
-        </ng-container>
-
-        <!-- Eff Column -->
-        <ng-container matColumnDef="efficiency">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Efficiency </th>
-          <td [ngClass]="getEffColor(element.efficiency)" mat-cell *matCellDef="let element"> {{element.efficiency}} </td>
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+              <div class="col-md-6">
+                <h5>Useability Analysis</h5>
+                <p>Spd - </p>
+                <p>Stats - </p>
+                <p>Efficiency - </p>
+                <p>Reapp Priority - </p>
+                <button type="button" class="btn btn-primary fas fa-sync fa-2x"></button> Reapp
+              </div>
+              <ul class="list-group col-md-6">
+                <li class="grey list-group-item d-flex justify-content-center align-items-center">
+                  <div class="flex-fill">{{element.inate_stat_type}}</div>
+                  <div class="w-25 text-right">+ {{element.inate_stat_value}} {{getType(element.inate_stat_type)}}</div>
+                  <div class="w-25 text-right">Grinds</div>
+                </li>
+                <li class="list-group-item d-flex justify-content-center align-items-center">
+                  <div class="flex-fill">{{element.sub_stats[0].type}} <span [innerHTML]="isGem(element.sub_stats[0].gem)"></span></div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[0].value}} {{getType(element.sub_stats[0].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[0].grind}} {{getType(element.sub_stats[0].type)}}</div>
+                </li>
+                <li class="list-group-item d-flex justify-content-center align-items-center">
+                  <div class="flex-fill">{{element.sub_stats[1].type}} <span [innerHTML]="isGem(element.sub_stats[1].gem)"></span></div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[1].value}} {{getType(element.sub_stats[1].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[1].grind}} {{getType(element.sub_stats[1].type)}}</div>
+                </li>
+                <li class="list-group-item d-flex justify-content-center align-items-center">
+                  <div class="flex-fill">{{element.sub_stats[2].type}} <span [innerHTML]="isGem(element.sub_stats[2].gem)"></span></div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[2].value}} {{getType(element.sub_stats[2].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[2].grind}} {{getType(element.sub_stats[2].type)}}</div>
+                </li>
+                <li class="list-group-item d-flex justify-content-center align-items-center">
+                  <div class="flex-fill">{{element.sub_stats[3].type}} <span [innerHTML]="isGem(element.sub_stats[3].gem)"></span></div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[3].value}} {{getType(element.sub_stats[3].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[3].grind}} {{getType(element.sub_stats[3].type)}}</div>
+                </li>
+              </ul>
+            </div>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
       </table>
+
     </div>
   </div>
 </div>`
