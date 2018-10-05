@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'shiftpicker-ng-app';
+  updateCount: number = 0;
+  title: string = 'reapp - sw';
+  updates: Array<String> = [
+    'Update 1 - details',
+    'Update 2 - details'
+  ]
 }

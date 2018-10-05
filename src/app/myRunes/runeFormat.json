@@ -104,3 +104,9 @@
         "Accuracy": [2, "ACC", 10],
         "Tolerance": [2, "RES", 10]
     ]
+
+    unit_list: {
+      runes: {
+        Array<Rune>
+      }
+    }

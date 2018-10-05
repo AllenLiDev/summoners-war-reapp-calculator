@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { $ } from 'protractor';
 
 @Component({
   selector: 'app-MyRunes',
@@ -59,8 +58,6 @@ export class MyRunesComponent implements OnInit {
           data.inate_stat_type.toLowerCase().indexOf(filter[2]) !== -1);
       }
     };
-    // set color class
-
   }
 
   // attached to input
