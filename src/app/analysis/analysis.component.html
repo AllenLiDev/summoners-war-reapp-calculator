@@ -1,0 +1,35 @@
+<div class="shell-padding">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="row justify-content-between section-header">
+      <div>
+        <span><i class="fas fa-home icon-pad"></i>Analysis</span>
+      </div>
+      <div>
+        {{ dateObj | date:'fullDate' }}
+      </div>
+    </div>
+    <!-- Select Rune Set -->
+    <div class="row">
+      <div class=" col-12 section-content">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Select Rune Set
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a *ngFor="let set of runeSets" class="dropdown-item" href="#">{{set}}</a>
+          </div>
+        </div>
+      </div>
+      <!-- Analysis section -->
+      <div class="col-12 section-content">
+        analysis...
+      </div>
+      <!-- Runes By Priority -->
+      <div class="col-12 section-content">
+        
+      </div>
+    </div>
+  </div>
+</div>

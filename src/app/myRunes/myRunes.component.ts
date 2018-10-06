@@ -21,6 +21,8 @@ export class MyRunesComponent implements OnInit {
   dateObj: Date = new Date();
   runeDataNew: any;
   runeDataActive: Array<Rune> = new Array();
+  runeDataEquippedActive: Array<Rune> = new Array();
+  runeDataBothActive: Array<Rune> = new Array();
   dataSource;
   fileTarget: EventTarget;
   legendRunes: Rune;
@@ -37,11 +39,16 @@ export class MyRunesComponent implements OnInit {
     if (localStorage.getItem('runeData')) {
       this.runeDataNew = JSON.parse(localStorage.getItem('runeData'));
       this.findLegendRunes();
+      this.findEquippedLegendRunes();
       this.dataSource.sort = this.sort;
     } else {
       this.dataSource = new Array();
     }
     // filter settings
+    this.applyFilterPred();
+  }
+
+  applyFilterPred = () => {
     this.dataSource.filterPredicate = (data: Rune, filter: Array<string>) => {
       if (filter.length == 1) {
         return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 ||
@@ -59,7 +66,6 @@ export class MyRunesComponent implements OnInit {
       }
     };
   }
-
   // attached to input
   onChange = (event) => {
     var file = event.target.files[0];
@@ -72,6 +78,24 @@ export class MyRunesComponent implements OnInit {
     reader.readAsText(file);
     this.findLegendRunes();
     this.dataSource.sort = this.sort;
+  }
+
+  setData = (num: number) => {
+    if (num == 0) {
+      this.dataSource = new MatTableDataSource(this.runeDataBothActive);
+      this.dataSource.sort = this.sort;
+      this.applyFilterPred();
+    }
+    if (num == 1) {
+      this.dataSource = new MatTableDataSource(this.runeDataActive);
+      this.dataSource.sort = this.sort;
+      this.applyFilterPred();
+    }
+    if (num == 2) {
+      this.dataSource = new MatTableDataSource(this.runeDataEquippedActive);
+      this.dataSource.sort = this.sort;
+      this.applyFilterPred();
+    }
   }
 
   applyFilter(filterValue: string) {
@@ -128,11 +152,76 @@ export class MyRunesComponent implements OnInit {
             efficiency: this.calcEff(this.runeDataNew.runes[i])
           }
           this.runeDataActive.push(tempRune);
+          this.runeDataBothActive.push(tempRune);
         }
       }
     }
     // console.log(this.runeDataActive);
     this.dataSource = new MatTableDataSource(this.runeDataActive);
+  }
+
+  findEquippedLegendRunes = () => {
+    // same as legend rune, but navigate to difference directory
+    for (let i = 0; i < this.runeDataNew.unit_list.length; i++) {
+      // if array exists; any runes equipped
+      if (this.runeDataNew.unit_list[i].runes) {
+
+        // all 6 rune slots
+        for (let j = 0; j < 6; j++) {
+          // if rune exists
+          if (this.runeDataNew.unit_list[i].runes[j]) {
+            // is extra = 5 = legend and class = 6 = 6 stars
+            if (this.runeDataNew.unit_list[i].runes[j].extra == 5 && this.runeDataNew.unit_list[i].runes[j].class == 6) {
+              // if slot 2/4/6 and not flat or slot 1/3/5
+              if ((this.runeDataNew.unit_list[i].runes[j].slot_no == 1 || this.runeDataNew.unit_list[i].runes[j].slot_no == 3 || this.runeDataNew.unit_list[i].runes[j].slot_no == 5)
+                || ((this.runeDataNew.unit_list[i].runes[j].slot_no == 2 || this.runeDataNew.unit_list[i].runes[j].slot_no == 4 || this.runeDataNew.unit_list[i].runes[j].slot_no == 6)
+                  && (this.runeDataNew.unit_list[i].runes[j].pri_eff != 1 || this.runeDataNew.unit_list[i].runes[j].pri_eff != 3 || this.runeDataNew.unit_list[i].runes[j].pri_eff != 5))) {
+                let tempRune: Rune = {
+                  set_id: this.getSet(this.runeDataNew.unit_list[i].runes[j].set_id),
+                  slot_no: this.runeDataNew.unit_list[i].runes[j].slot_no,
+                  occupied_id: this.runeDataNew.unit_list[i].runes[j].occupied_id,
+                  occupied_type: this.runeDataNew.unit_list[i].runes[j].occupied_type,
+                  primary_stat_type: this.getStat(this.runeDataNew.unit_list[i].runes[j].pri_eff[0]),
+                  primary_stat_value: this.runeDataNew.unit_list[i].runes[j].pri_eff[1],
+                  inate_stat_type: this.getStat(this.runeDataNew.unit_list[i].runes[j].prefix_eff[0]),
+                  inate_stat_value: this.runeDataNew.unit_list[i].runes[j].prefix_eff[1],
+                  sub_stats: {
+                    0: {
+                      type: this.getStat(this.runeDataNew.unit_list[i].runes[j].sec_eff[0][0]),
+                      value: this.runeDataNew.unit_list[i].runes[j].sec_eff[0][1],
+                      gem: this.runeDataNew.unit_list[i].runes[j].sec_eff[0][2],
+                      grind: this.runeDataNew.unit_list[i].runes[j].sec_eff[0][3]
+                    },
+                    1: {
+                      type: this.getStat(this.runeDataNew.unit_list[i].runes[j].sec_eff[1][0]),
+                      value: this.runeDataNew.unit_list[i].runes[j].sec_eff[1][1],
+                      gem: this.runeDataNew.unit_list[i].runes[j].sec_eff[1][2],
+                      grind: this.runeDataNew.unit_list[i].runes[j].sec_eff[1][3]
+                    },
+                    2: {
+                      type: this.getStat(this.runeDataNew.unit_list[i].runes[j].sec_eff[2][0]),
+                      value: this.runeDataNew.unit_list[i].runes[j].sec_eff[2][1],
+                      gem: this.runeDataNew.unit_list[i].runes[j].sec_eff[2][2],
+                      grind: this.runeDataNew.unit_list[i].runes[j].sec_eff[2][3]
+                    },
+                    3: {
+                      type: this.getStat(this.runeDataNew.unit_list[i].runes[j].sec_eff[3][0]),
+                      value: this.runeDataNew.unit_list[i].runes[j].sec_eff[3][1],
+                      gem: this.runeDataNew.unit_list[i].runes[j].sec_eff[3][2],
+                      grind: this.runeDataNew.unit_list[i].runes[j].sec_eff[3][3]
+                    }
+                  },
+                  upgrade: this.runeDataNew.unit_list[i].runes[j].upgrade_curr,
+                  efficiency: this.calcEff(this.runeDataNew.unit_list[i].runes[j])
+                }
+                this.runeDataEquippedActive.push(tempRune);
+                this.runeDataBothActive.push(tempRune);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   // calculate efficiency of rune based on stats
@@ -284,7 +373,7 @@ export class MyRunesComponent implements OnInit {
   }
 
   isGem = (input: number) => {
-    if(input){
+    if (input) {
       return '<i class="far fa-gem"></i>';
     }
     return;

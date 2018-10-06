@@ -26,13 +26,13 @@
       </div>
       <div class="col-md-6 section-content">
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-secondary">
+          <label (click)="setData(0)" class="btn btn-secondary">
             <input type="radio" name="options" id="option1" autocomplete="off"> Both
           </label>
-          <label class="btn btn-secondary active">
+          <label (click)="setData(1)" class="btn btn-secondary active">
             <input type="radio" name="options" id="option2" autocomplete="off" checked> Inventory
           </label>
-          <label class="btn btn-secondary">
+          <label (click)="setData(2)" class="btn btn-secondary">
             <input type="radio" name="options" id="option3" autocomplete="off"> Equipped
           </label>
         </div>
