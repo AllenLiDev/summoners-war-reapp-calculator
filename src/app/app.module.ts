@@ -13,13 +13,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input';
+import { TickRateComponent } from './tick-rate/tick-rate.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     MyRunesComponent,
-    AnalysisComponent
+    AnalysisComponent,
+    TickRateComponent
   ],
   imports: [
     BrowserModule,

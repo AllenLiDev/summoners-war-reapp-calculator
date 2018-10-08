@@ -1,0 +1,49 @@
+<div class="shell-padding">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="row justify-content-between section-header">
+      <div>
+        <span><i class="fas fa-home icon-pad"></i>Tick Rate</span>
+      </div>
+      <div>
+        {{ dateObj | date:'fullDate' }}
+      </div>
+    </div>
+    <!-- Select Rune Set -->
+    <div class="row">
+      <div class="col-6 section-content">
+        <div class="input-group mb-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Base Speed</span>
+          </div>
+          <input type="number" (keyup)="base($event.target.value)">
+        </div>
+        <div class="input-group mb-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Rune Speed</span>
+          </div>
+          <input type="number" (keyup)="rune($event.target.value)">
+        </div>
+      </div>
+      <div class="col-6 section-content">
+        <p>No Lead: {{totalSpd}} Tick: {{tickCalc(totalSpd)}}</p>
+        <p>24%: {{lead24Spd}} Tick: {{tickCalc(lead24Spd)}}</p>
+        <p>30%: {{lead30Spd}} Tick: {{tickCalc(lead30Spd)}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 section-content text-right">
+        <p>4 358</p>
+        <p>5 286</p>
+        <p>6 239</p>
+        <p>7 205</p>
+      </div>
+      <div class="col-6 section-content">
+        <p>8 179</p>
+        <p>9 159</p>
+        <p>10 143</p>
+        <p>11 130</p>
+      </div>
+    </div>
+  </div>
+</div>
