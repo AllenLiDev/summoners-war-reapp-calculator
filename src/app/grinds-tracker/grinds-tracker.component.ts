@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-analysis',
-  templateUrl: './analysis.component.html',
-  styleUrls: ['./analysis.component.scss']
+  selector: 'app-grinds-tracker',
+  templateUrl: './grinds-tracker.component.html',
+  styleUrls: ['./grinds-tracker.component.scss']
 })
-export class AnalysisComponent implements OnInit {
+export class GrindsTrackerComponent implements OnInit {
   dateObj: Date = new Date();
   runeTypes: Array<string> = RuneTypes;
 

@@ -14,6 +14,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input';
 import { TickRateComponent } from './tick-rate/tick-rate.component';
+import { GrindsTrackerComponent } from './grinds-tracker/grinds-tracker.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TickRateComponent } from './tick-rate/tick-rate.component';
     DashboardComponent,
     MyRunesComponent,
     AnalysisComponent,
-    TickRateComponent
+    TickRateComponent,
+    GrindsTrackerComponent
   ],
   imports: [
     BrowserModule,

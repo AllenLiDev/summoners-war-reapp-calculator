@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" routerLink="/calculator">Home</a>
-  <div class="dropdown">
+  <div *ngIf="0" class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
       Updates <span class="badge badge-light">{{updateCount}}</span>
@@ -21,7 +21,7 @@
       <a class="nav-item nav-link" routerLink="/myRunes">My Runes</a>
       <a class="nav-item nav-link" routerLink="/analysis">Analysis</a>
       <a class="nav-item nav-link" routerLink="/tickRate">Tick Rate</a>
-      <a class="nav-item nav-link" routerLink="/">Feature</a>
+      <a class="nav-item nav-link" routerLink="/grindsTracker">Grinds Tracker</a>
     </div>
   </div>
 </nav>

@@ -34,6 +34,9 @@ export class MyRunesComponent implements OnInit {
   inateSelected: string = 'Any';
   spdSelected: string = 'Any';
   grindSelected: string = 'Any';
+  // tables
+  dataTableSelected = 1;
+  recTableSelected = 0;
 
   constructor() {
   }
@@ -106,7 +109,7 @@ export class MyRunesComponent implements OnInit {
               enchantFound = true;
             }
           }
-          if(!enchantFound) result = false;
+          if (!enchantFound) result = false;
         } else {
           let enchantFound = false;
           for (let i = 0; i < 4; i++) {
@@ -114,11 +117,11 @@ export class MyRunesComponent implements OnInit {
               enchantFound = true;
             }
           }
-          if(enchantFound) result = false;
+          if (enchantFound) result = false;
         }
       }
       return result;
-    };
+    }
   }
   // attached to input
   onChange = (event) => {
@@ -310,6 +313,16 @@ export class MyRunesComponent implements OnInit {
   setSpd = (spd: string) => {
     this.spdSelected = spd;
     this.applyFilter();
+  }
+
+  showRecommended = (num: number) => {
+    if (num == 1) {
+      this.dataTableSelected = 0;
+      this.recTableSelected = 1;
+    } else {
+      this.dataTableSelected = 1;
+      this.recTableSelected = 0;
+    }
   }
 
   // calculate efficiency of rune based on stats

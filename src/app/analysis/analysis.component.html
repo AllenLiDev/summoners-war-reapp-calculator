@@ -11,24 +11,22 @@
     </div>
     <!-- Select Rune Set -->
     <div class="row">
-      <div class=" col-12 section-content">
+      <div class="col-12 section-content">
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             Select Rune Set
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a *ngFor="let set of runeSets" class="dropdown-item" href="#">{{set}}</a>
+            <a *ngFor="let rune of runeTypes" class="dropdown-item" href="#">{{rune}}</a>
           </div>
         </div>
       </div>
-      <!-- Analysis section -->
+    </div>
+    <!-- Analysis section -->
+    <div class="row">
       <div class="col-12 section-content">
-        analysis...
-      </div>
-      <!-- Runes By Priority -->
-      <div class="col-12 section-content">
-        
+
       </div>
     </div>
   </div>

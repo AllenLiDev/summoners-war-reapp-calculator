@@ -39,7 +39,7 @@
         <div class="btn-group" role="group">
           <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-          {{typeSelected}}
+            {{typeSelected}}
           </button>
           <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <a *ngFor="let type of runeTypes" (click)="setSelected(type)" class="dropdown-item">{{type}}</a>
@@ -72,9 +72,7 @@
           </label>
         </div>
       </div>
-    </div>
-    <!-- Rune Filter Select -->
-    <div class="row justify-content-center">
+      <!-- Rune Filter Select -->
       <div class="col-md-4 section-content">
         <div>Inate</div>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -118,8 +116,22 @@
         </div>
       </div>
     </div>
-    <!-- Rune Data -->
+    <!-- Recommended Rune for Reapp -->
     <div class="row">
+      <div class="col-12 section-content">
+        <div>Show Recommended Reapp Runes</div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label (click)="showRecommended(1)" class="btn btn-secondary">
+            <input type="radio" name="options" id="option1" autocomplete="off"> Yes
+          </label>
+          <label (click)="showRecommended(0)" class="btn btn-secondary active">
+            <input type="radio" name="options" id="option2" autocomplete="off" checked> No
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- Rune Data -->
+    <div *ngIf="dataTableSelected" class="row">
       <!-- <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field> -->
