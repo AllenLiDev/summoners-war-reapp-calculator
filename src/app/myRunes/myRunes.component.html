@@ -15,16 +15,13 @@
         <input class="text-right" type="file" id="file" name="file" accept=".json" (change)="onChange($event)">
       </div>
       <div class="col-md-6 section-content">
-        Only 6* Legend Base Quality Rune Shown
+        Use SWEX EXPORTER FILE -> Link
       </div>
     </div>
     <!-- Sub Menu -->
     <div class="row">
-      <div class="col-md-6 section-content">
-        Use Space Separator to filter by
-        RuneType StatType InateStat
-      </div>
-      <div class="col-md-6 section-content">
+      <div class="col-md-4 section-content">
+        <div>Rune Location</div>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label (click)="setData(0)" class="btn btn-secondary">
             <input type="radio" name="options" id="option1" autocomplete="off"> Both
@@ -37,12 +34,95 @@
           </label>
         </div>
       </div>
+      <div class="col-md-4 section-content">
+        <div>Rune Type</div>
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+          {{typeSelected}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a *ngFor="let type of runeTypes" (click)="setSelected(type)" class="dropdown-item">{{type}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 section-content">
+        <div>Slot</div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label (click)="setSlot('Any')" class="btn btn-secondary active">
+            <input type="radio" name="options" id="option0" autocomplete="off" checked> Any
+          </label>
+          <label (click)="setSlot(1)" class="btn btn-secondary">
+            <input type="radio" name="options" id="option1" autocomplete="off"> 1
+          </label>
+          <label (click)="setSlot(2)" class="btn btn-secondary">
+            <input type="radio" name="options" id="option2" autocomplete="off"> 2
+          </label>
+          <label (click)="setSlot(3)" class="btn btn-secondary">
+            <input type="radio" name="options" id="option3" autocomplete="off"> 3
+          </label>
+          <label (click)="setSlot(4)" class="btn btn-secondary">
+            <input type="radio" name="options" id="option4" autocomplete="off"> 4
+          </label>
+          <label (click)="setSlot(5)" class="btn btn-secondary">
+            <input type="radio" name="options" id="option5" autocomplete="off"> 5
+          </label>
+          <label (click)="setSlot(6)" class="btn btn-secondary">
+            <input type="radio" name="options" id="option6" autocomplete="off"> 6
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- Rune Filter Select -->
+    <div class="row justify-content-center">
+      <div class="col-md-4 section-content">
+        <div>Inate</div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label (click)="setInate('Any')" class="btn btn-secondary active">
+            <input type="radio" name="options" id="option0" autocomplete="off" checked> Any
+          </label>
+          <label (click)="setInate('Yes')" class="btn btn-secondary">
+            <input type="radio" name="options" id="option1" autocomplete="off"> Yes
+          </label>
+          <label (click)="setInate('No')" class="btn btn-secondary">
+            <input type="radio" name="options" id="option2" autocomplete="off"> No
+          </label>
+        </div>
+      </div>
+      <div class="col-md-4 section-content">
+        <div>Speed Sub</div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label (click)="setSpd('Any')" class="btn btn-secondary active">
+            <input type="radio" name="options" id="option0" autocomplete="off" checked> Any
+          </label>
+          <label (click)="setSpd('Yes')" class="btn btn-secondary">
+            <input type="radio" name="options" id="option1" autocomplete="off"> Yes
+          </label>
+          <label (click)="setSpd('No')" class="btn btn-secondary">
+            <input type="radio" name="options" id="option2" autocomplete="off"> No
+          </label>
+        </div>
+      </div>
+      <div class="col-md-4 section-content">
+        <div>Grinded or Gemmed</div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label (click)="setGrind('Any')" class="btn btn-secondary active">
+            <input type="radio" name="options" id="option0" autocomplete="off" checked> Any
+          </label>
+          <label (click)="setGrind('Yes')" class="btn btn-secondary">
+            <input type="radio" name="options" id="option1" autocomplete="off"> Yes
+          </label>
+          <label (click)="setGrind('No')" class="btn btn-secondary">
+            <input type="radio" name="options" id="option2" autocomplete="off"> No
+          </label>
+        </div>
+      </div>
     </div>
     <!-- Rune Data -->
     <div class="row">
-      <mat-form-field>
+      <!-- <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-      </mat-form-field>
+      </mat-form-field> -->
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">
         <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
           <th mat-header-cell mat-sort-header *matHeaderCellDef> {{column}} </th>
@@ -70,23 +150,31 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-center align-items-center">
                   <div class="flex-fill">{{element.sub_stats[0].type}} <span [innerHTML]="isGem(element.sub_stats[0].gem)"></span></div>
-                  <div class="w-25 text-right">+ {{element.sub_stats[0].value}} {{getType(element.sub_stats[0].type)}}</div>
-                  <div class="w-25 text-right"> + {{element.sub_stats[0].grind}} {{getType(element.sub_stats[0].type)}}</div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[0].value}}
+                    {{getType(element.sub_stats[0].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[0].grind}}
+                    {{getType(element.sub_stats[0].type)}}</div>
                 </li>
                 <li class="list-group-item d-flex justify-content-center align-items-center">
                   <div class="flex-fill">{{element.sub_stats[1].type}} <span [innerHTML]="isGem(element.sub_stats[1].gem)"></span></div>
-                  <div class="w-25 text-right">+ {{element.sub_stats[1].value}} {{getType(element.sub_stats[1].type)}}</div>
-                  <div class="w-25 text-right"> + {{element.sub_stats[1].grind}} {{getType(element.sub_stats[1].type)}}</div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[1].value}}
+                    {{getType(element.sub_stats[1].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[1].grind}}
+                    {{getType(element.sub_stats[1].type)}}</div>
                 </li>
                 <li class="list-group-item d-flex justify-content-center align-items-center">
                   <div class="flex-fill">{{element.sub_stats[2].type}} <span [innerHTML]="isGem(element.sub_stats[2].gem)"></span></div>
-                  <div class="w-25 text-right">+ {{element.sub_stats[2].value}} {{getType(element.sub_stats[2].type)}}</div>
-                  <div class="w-25 text-right"> + {{element.sub_stats[2].grind}} {{getType(element.sub_stats[2].type)}}</div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[2].value}}
+                    {{getType(element.sub_stats[2].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[2].grind}}
+                    {{getType(element.sub_stats[2].type)}}</div>
                 </li>
                 <li class="list-group-item d-flex justify-content-center align-items-center">
                   <div class="flex-fill">{{element.sub_stats[3].type}} <span [innerHTML]="isGem(element.sub_stats[3].gem)"></span></div>
-                  <div class="w-25 text-right">+ {{element.sub_stats[3].value}} {{getType(element.sub_stats[3].type)}}</div>
-                  <div class="w-25 text-right"> + {{element.sub_stats[3].grind}} {{getType(element.sub_stats[3].type)}}</div>
+                  <div class="w-25 text-right">+ {{element.sub_stats[3].value}}
+                    {{getType(element.sub_stats[3].type)}}</div>
+                  <div class="w-25 text-right"> + {{element.sub_stats[3].grind}}
+                    {{getType(element.sub_stats[3].type)}}</div>
                 </li>
               </ul>
             </div>

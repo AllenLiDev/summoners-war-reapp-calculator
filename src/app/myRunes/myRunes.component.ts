@@ -27,6 +27,13 @@ export class MyRunesComponent implements OnInit {
   fileTarget: EventTarget;
   legendRunes: Rune;
   expandedElement: Rune;
+  runeTypes: Array<string> = RuneTypes;
+  // filter variables
+  typeSelected: string = 'Any';
+  slotSelected: string = 'Any';
+  inateSelected: string = 'Any';
+  spdSelected: string = 'Any';
+  grindSelected: string = 'Any';
 
   constructor() {
   }
@@ -50,20 +57,67 @@ export class MyRunesComponent implements OnInit {
 
   applyFilterPred = () => {
     this.dataSource.filterPredicate = (data: Rune, filter: Array<string>) => {
-      if (filter.length == 1) {
-        return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 ||
-          data.primary_stat_type.toLowerCase().indexOf(filter[0]) !== -1 ||
-          data.inate_stat_type.toLowerCase().indexOf(filter[0]) !== -1);
-      } else if (filter.length == 2) {
-        return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 &&
-          data.primary_stat_type.toLowerCase().indexOf(filter[1]) !== -1) ||
-          (data.primary_stat_type.toLowerCase().indexOf(filter[0]) !== -1 &&
-            data.inate_stat_type.toLowerCase().indexOf(filter[1]) !== -1);
-      } else if (filter.length >= 3) {
-        return (data.set_id.toLowerCase().indexOf(filter[0]) !== -1 &&
-          data.primary_stat_type.toLowerCase().indexOf(filter[1]) !== -1 &&
-          data.inate_stat_type.toLowerCase().indexOf(filter[2]) !== -1);
+      let result = true;
+      if (filter[0] != 'Any') {
+        if (data.set_id.indexOf(filter[0]) == -1) {
+          result = false;
+        }
       }
+      if (filter[1] != 'Any') {
+        if (data.slot_no.toString().indexOf(filter[1]) == -1) {
+          result = false;
+        }
+      }
+      if (filter[2] != 'Any') {
+        if (filter[2] == 'Yes') {
+          if (data.inate_stat_value == 0) {
+            result = false;
+          }
+        } else {
+          if (data.inate_stat_value != 0) {
+            result = false;
+          }
+        }
+      }
+      if (filter[3] != 'Any') {
+        if (filter[3] == 'Yes') {
+          let spdFound = false;
+          for (let i = 0; i < 4; i++) {
+            if (data.sub_stats[i].type == 'SPD') {
+              spdFound = true;
+            }
+          }
+          if (!spdFound) result = false;
+        } else {
+          let spdFound = false;
+          for (let i = 0; i < 4; i++) {
+            if (data.sub_stats[i].type == 'SPD') {
+              spdFound = true;
+            }
+          }
+          if (spdFound) result = false;
+        }
+      }
+      if (filter[4] != 'Any') {
+        if (filter[4] == 'Yes') {
+          let enchantFound = false;
+          for (let i = 0; i < 4; i++) {
+            if (data.sub_stats[i].gem != 0 || data.sub_stats[i].grind != 0) {
+              enchantFound = true;
+            }
+          }
+          if(!enchantFound) result = false;
+        } else {
+          let enchantFound = false;
+          for (let i = 0; i < 4; i++) {
+            if (data.sub_stats[i].gem != 0 || data.sub_stats[i].grind != 0) {
+              enchantFound = true;
+            }
+          }
+          if(enchantFound) result = false;
+        }
+      }
+      return result;
     };
   }
   // attached to input
@@ -96,11 +150,16 @@ export class MyRunesComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.applyFilterPred();
     }
+    this.applyFilter();
   }
 
-  applyFilter(filterValue: string) {
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
-    let temp = filterValue.toLowerCase().split(' ', 3);
+  applyFilter() {
+    let temp: Array<string> = [];
+    temp.push(this.typeSelected);
+    temp.push(this.slotSelected);
+    temp.push(this.inateSelected)
+    temp.push(this.spdSelected);
+    temp.push(this.grindSelected);
     this.dataSource.filter = temp;
   }
 
@@ -222,6 +281,35 @@ export class MyRunesComponent implements OnInit {
         }
       }
     }
+  }
+
+  // sets selected rune type filter
+  setSelected = (rune: string) => {
+    this.typeSelected = rune;
+    this.applyFilter();
+  }
+
+  // sets slot slected
+  setSlot = (slot: string) => {
+    this.slotSelected = slot;
+    this.applyFilter();
+  }
+
+  // sets inate slected
+  setInate = (inate: string) => {
+    this.inateSelected = inate;
+    this.applyFilter();
+  }
+
+  // sets grind selected
+  setGrind = (grind: string) => {
+    this.grindSelected = grind;
+    this.applyFilter();
+  }
+
+  setSpd = (spd: string) => {
+    this.spdSelected = spd;
+    this.applyFilter();
   }
 
   // calculate efficiency of rune based on stats
@@ -405,3 +493,28 @@ export interface Stat {
   gem: number;
   grind: number;
 }
+
+const RuneTypes = [
+  'Any',
+  'Energy',
+  'Guard',
+  'Swift',
+  'Blade',
+  'Rage',
+  'Focus',
+  'Endure',
+  'Fatal',
+  'Despair',
+  'Vampire',
+  'Violent',
+  'Nemesis',
+  'Will',
+  'Shield',
+  'Revenge',
+  'Destroy',
+  'Fight',
+  'Determination',
+  'Enhance',
+  'Accuracy',
+  'Tolerance'
+]
