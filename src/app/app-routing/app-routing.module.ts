@@ -5,6 +5,7 @@ import { MyRunesComponent } from '../myRunes/myRunes.component';
 import { AnalysisComponent } from '../analysis/analysis.component';
 import { TickRateComponent} from '../tick-rate/tick-rate.component';
 import { GrindsTrackerComponent } from '../grinds-tracker/grinds-tracker.component';
+import { TeamAnalysisComponent } from '../team-analysis/team-analysis.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/calculator', pathMatch: 'full' },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'myRunes', component: MyRunesComponent },
   { path: 'analysis', component: AnalysisComponent },
   { path: 'tickRate', component: TickRateComponent },
-  { path: 'grindsTracker', component: GrindsTrackerComponent }
+  { path: 'grindsTracker', component: GrindsTrackerComponent },
+  { path: 'teamAnalysis', component: TeamAnalysisComponent}
 ];
 
 @NgModule({
