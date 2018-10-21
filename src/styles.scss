@@ -135,3 +135,10 @@ body {
 .mat-row {
     background-color: $grey;
 }
+
+.progress-bar-right {
+    position: absolute;
+    text-align: right;
+    right: 2.5rem;
+    left: 1.25rem;
+}

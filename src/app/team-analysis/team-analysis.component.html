@@ -11,8 +11,8 @@
     </div>
     <!-- Section Content -->
     <div class="row justify-content-between">
+      <!-- Mon Select -->
       <div class="col-12 section-content">
-        <!-- Mon 1 -->
         <form class="">
           <mat-form-field class="">
             <input #monster type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
@@ -26,6 +26,45 @@
         </form>
         <button (click)="addMonster(monster.value)"></button>
       </div>
+    </div>
+    <div class="row justify-content-center">
+      <!-- Monster Selected-->
+      <ul *ngFor="let monster of monstersSelected" class="col-md-3 section-content list-group">
+        <li class="list-group-item">
+          <div>{{getUnitName(monster.unit_master_id)}}</div>
+        </li>
+        <li class="list-group-item" data-toggle="collapse" href="#tick-rate">
+          <div>Speed: {{monster.spd + getUnitRuneSpeed(monster)}} | Tick: {{getTickRate(monster.spd +
+            getUnitRuneSpeed(monster))}}</div>
+          <div class="collapse" id="tick-rate">
+            <div class="progress" style="height: 20px;">
+              <div class="progress-bar" role="progressbar" [style.width]="getTickPercent(monster.spd + getUnitRuneSpeed(monster)) + '%'">
+                +{{getTickCalc(monster.spd + getUnitRuneSpeed(monster), 0)}}</div>
+              <div class="progress-bar-right">-{{getTickCalc(monster.spd + getUnitRuneSpeed(monster), 1)}}</div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item" data-toggle="collapse" href="#base-stats">
+          <div>Base Speed: {{monster.spd}}</div>
+          <div class="collapse" id="base-stats">
+            <div>HP: {{monster.con * 15}}</div>
+            <div>ATT: {{monster.atk}}</div>
+            <div>DEF: {{monster.def}}</div>
+            <div>SPD: {{monster.spd}}</div>
+            <div>Crit: {{monster.critical_rate}}</div>
+            <div>CDmg: {{monster.critical_damage}}</div>
+            <div>Res: {{monster.resist}}</div>
+            <div>Acc: {{monster.accuracy}}</div>
+          </div>
+        <li class="list-group-item" data-toggle="collapse" href="#rune-stats">
+          <div>Rune Speed: +{{getUnitRuneSpeed(monster)}}</div>
+          <div class="collapse" id="rune-stats">
+            <div *ngFor="let rune of monster.runes">
+              {{rune.base_value}}
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

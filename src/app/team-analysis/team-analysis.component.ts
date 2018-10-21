@@ -12,8 +12,10 @@ export class TeamAnalysisComponent implements OnInit {
   dateObj: Date = new Date();
   myControl = new FormControl();
   options: Array<string> = new Array();
-  optionsSpeed: Array<number> = new Array();
   filteredOptions: Observable<string[]>;
+  optionsSpeed: Array<Unit> = new Array();
+  monstersSelected: Array<Unit> = new Array();
+  testValue: string = '25%';
 
   constructor() { }
 
@@ -33,26 +35,152 @@ export class TeamAnalysisComponent implements OnInit {
 
   getMonsterList = () => {
     let data = JSON.parse(localStorage.getItem('runeData'));
-    for(let i = 0; i < data.unit_list.length; i++){
+    for (let i = 0; i < data.unit_list.length; i++) {
       let tempName = this.getUnitName(data.unit_list[i].unit_master_id);
-      if(!this.options.includes(tempName)) {
+      if (!this.options.includes(tempName)) {
         this.options.push(tempName);
-        this.optionsSpeed.push(data.unit_list[i].spd);
+        this.optionsSpeed.push(data.unit_list[i]);
       }
     }
   }
 
   getUnitName = (id: number) => {
-    for(let i = 0; i < Monster.length; i++){
-      if(id == Monster[i].com2us_id){
+    for (let i = 0; i < Monster.length; i++) {
+      if (id == Monster[i].com2us_id) {
         return Monster[i].name;
       }
     }
   }
 
+  getUnitRuneSpeed = (monster: any) => {
+    let total = 0;
+    let swiftCount = 0;
+    monster.runes.forEach(rune => {
+      // spd stats
+      if (rune.pri_eff[0] == 8) {
+        total += rune.pri_eff[1];
+      } else
+        if (rune.prefix_eff[0] == 8) {
+          total += rune.prefix_eff[1];
+        } else {
+          rune.sec_eff.forEach(sub => {
+            if (sub[0] == 8) {
+              total += sub[1] + sub[3];
+            }
+          });
+        }
+      // set bonus
+      if (rune.set_id == 3) {
+        swiftCount++;
+      }
+    });
+    if (swiftCount > 3) {
+      total += monster.spd * 0.25;
+    }
+    return total;
+  }
+
+  getTickRate = (speed: number) => {
+    if (speed < 96) {
+      return 15;
+    } else if (speed < 103) {
+      return 14;
+    } else if (speed < 110) {
+      return 13;
+    } else if (speed < 120) {
+      return 12;
+    } else if (speed < 130) {
+      return 11;
+    } else if (speed < 143) {
+      return 10;
+    } else if (speed < 159) {
+      return 9;
+    } else if (speed < 179) {
+      return 8;
+    } else if (speed < 205) {
+      return 7;
+    } else if (speed < 239) {
+      return 6;
+    } else if (speed < 286) {
+      return 5;
+    } else if (speed < 358) {
+      return 4;
+    } else {
+      return 3;
+    }
+  }
+
+  getTickCalc = (speed: number, type: boolean) => {
+    if (speed < 96) {
+      return type ? 96 - speed : speed - 90;
+    } else if (speed < 103) {
+      return type ? 103 - speed : speed - 96;
+    } else if (speed < 110) {
+      return type ? 110 - speed : speed - 103;
+    } else if (speed < 120) {
+      return type ? 120 - speed : speed - 110;
+    } else if (speed < 130) {
+      return type ? 130 - speed : speed - 120;
+    } else if (speed < 143) {
+      return type ? 143 - speed : speed - 130;
+    } else if (speed < 159) {
+      return type ? 159 - speed : speed - 143;
+    } else if (speed < 179) {
+      return type ? 179 - speed : speed - 159;
+    } else if (speed < 205) {
+      return type ? 205 - speed : speed - 179;
+    } else if (speed < 239) {
+      return type ? 239 - speed : speed - 205;
+    } else if (speed < 286) {
+      return type ? 286 - speed : speed - 239;
+    } else if (speed < 358) {
+      return type ? 358 - speed : speed - 286;
+    } else {
+      return type ? 477 - speed : speed - 358;
+    }
+  }
+
+  getTickPercent = (speed: number) => {
+    if (speed < 96) {
+      return 100 * (speed - 90) / (96 - 90);
+    } else if (speed < 103) {
+      return 100 * (speed - 96) / (103 - 96);
+    } else if (speed < 110) {
+      return 100 * (speed - 103) / (110 - 103);
+    } else if (speed < 120) {
+      return 100 * (speed - 110) / (120 - 110);
+    } else if (speed < 130) {
+      return 100 * (speed - 120) / (130 - 120);
+    } else if (speed < 143) {
+      return 100 * (speed - 133) / (143 - 130);
+    } else if (speed < 159) {
+      return 100 * (speed - 143) / (159 - 143);
+    } else if (speed < 179) {
+      return 100 * (speed - 159) / (179 - 159);
+    } else if (speed < 205) {
+      return 100 * (speed - 179) / (205 - 179);
+    } else if (speed < 239) {
+      return 100 * (speed - 205) / (239 - 205);
+    } else if (speed < 286) {
+      return 100 * (speed - 239) / (286 - 239);
+    } else if (speed < 358) {
+      return 100 * (speed - 386) / (385 - 286);
+    } else {
+      return 100 * (speed - 358) / (477- 385);
+    }
+  }
+
   addMonster = (text: string) => {
-    console.log(this.optionsSpeed[this.options.indexOf(text)]);
+    this.monstersSelected.push(this.optionsSpeed[this.options.indexOf(text)]);
+    // filter it by base spd
+    this.sortByBaseSpd();
     this.myControl.setValue('');
+  }
+
+  sortByBaseSpd = () => {
+    this.monstersSelected.sort((a, b) => {
+      return (b.spd + this.getUnitRuneSpeed(b)) - (a.spd + this.getUnitRuneSpeed(a));
+    });
   }
 }
 
@@ -60,6 +188,22 @@ export interface Beastiary {
   com2us_id: number,
   name: string,
   element?: string
+}
+
+export interface Unit {
+  accuracy: number,
+  atk: number,
+  con: number,
+  critical_damage: number,
+  critical_rate: number,
+  def: number,
+  homunculus: number,
+  homunculus_name: string,
+  resist: number,
+  runes: any,
+  spd: number,
+  unit_id: number,
+  unit_master_id: number,
 }
 
 const Monster: Array<Beastiary> = [
