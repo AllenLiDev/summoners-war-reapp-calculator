@@ -16,6 +16,10 @@ export class TeamAnalysisComponent implements OnInit {
   optionsSpeed: Array<Unit> = new Array();
   monstersSelected: Array<Unit> = new Array();
   testValue: string = '25%';
+  glorySpeed: Array<number> = [0, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15];
+  speedLead: Array<number> = [0, 10, 19, 24, 30, 33];
+  glorySpeedCur: number = 0;
+  speedLeadCur: number = 0;
 
   constructor() { }
 
@@ -177,9 +181,17 @@ export class TeamAnalysisComponent implements OnInit {
     this.myControl.setValue('');
   }
 
+  setSpeedLead = (speed: number) => {
+    this.speedLeadCur = speed;
+  }
+
+  setGlorySpeed = (speed: number) => {
+    this.glorySpeedCur = speed;
+  }
+
   sortByBaseSpd = () => {
     this.monstersSelected.sort((a, b) => {
-      return (b.spd + this.getUnitRuneSpeed(b)) - (a.spd + this.getUnitRuneSpeed(a));
+      return (b.spd + b.spd * (this.glorySpeedCur + this.speedLeadCur) + this.getUnitRuneSpeed(b)) - (a.spd + a.spd * (this.glorySpeedCur + this.speedLeadCur) + this.getUnitRuneSpeed(a));
     });
   }
 }

@@ -12,7 +12,7 @@
     <!-- Section Content -->
     <div class="row justify-content-between">
       <!-- Mon Select -->
-      <div class="col-12 section-content">
+      <div class="col-6 section-content">
         <form class="">
           <mat-form-field class="">
             <input #monster type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
@@ -26,6 +26,28 @@
         </form>
         <button (click)="addMonster(monster.value)"></button>
       </div>
+      <div class="col-3 section-content">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{glorySpeedCur | number}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a *ngFor="let spd of glorySpeed" (click)="setGlorySpeed(spd)" class="dropdown-item">{{spd}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 section-content">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{speedLeadCur | number}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a *ngFor="let spd of speedLead" (click)="setSpeedLead(spd)" class="dropdown-item">{{spd}}</a>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row justify-content-center">
       <!-- Monster Selected-->
@@ -34,13 +56,17 @@
           <div>{{getUnitName(monster.unit_master_id)}}</div>
         </li>
         <li class="list-group-item" data-toggle="collapse" href="#tick-rate">
-          <div>Speed: {{monster.spd + getUnitRuneSpeed(monster)}} | Tick: {{getTickRate(monster.spd +
+          <div>Speed: {{monster.spd + (monster.spd * (glorySpeedCur + speedLeadCur) / 100) +
+            getUnitRuneSpeed(monster) | number}} | Tick: {{getTickRate(monster.spd + (monster.spd * (glorySpeedCur +
+            speedLeadCur) / 100) +
             getUnitRuneSpeed(monster))}}</div>
           <div class="collapse" id="tick-rate">
             <div class="progress" style="height: 20px;">
-              <div class="progress-bar" role="progressbar" [style.width]="getTickPercent(monster.spd + getUnitRuneSpeed(monster)) + '%'">
-                +{{getTickCalc(monster.spd + getUnitRuneSpeed(monster), 0)}}</div>
-              <div class="progress-bar-right">-{{getTickCalc(monster.spd + getUnitRuneSpeed(monster), 1)}}</div>
+              <div class="progress-bar" role="progressbar" [style.width]="getTickPercent(monster.spd + (monster.spd * (glorySpeedCur + speedLeadCur) / 100) + getUnitRuneSpeed(monster)) + '%'">
+                +{{getTickCalc(monster.spd + (monster.spd * (glorySpeedCur + speedLeadCur) / 100) +
+                getUnitRuneSpeed(monster), 0) | number}}</div>
+              <div class="progress-bar-right">-{{getTickCalc(monster.spd + (monster.spd * (glorySpeedCur +
+                speedLeadCur) / 100) + getUnitRuneSpeed(monster), 1) | number}}</div>
             </div>
           </div>
         </li>
