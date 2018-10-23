@@ -1,5 +1,5 @@
 <div class="shell-padding">
-  <div class="container">
+  <div class="container-fluid">
     <!-- Section Header -->
     <div class="row justify-content-between section-header">
       <div>
@@ -12,14 +12,32 @@
     <div class="row">
       <div class="col-6 section-content">
         <div class="dropdown">
-          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownRuneLink" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            Select a rune
+            {{runeSelected}}
           </a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a *ngFor="let rune of runeTypes" class="dropdown-item">{{rune}}</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownRuneLink">
+            <a *ngFor="let rune of runeTypes" (click)="setRuneSelected(rune)" class="dropdown-item">{{rune}}</a>
           </div>
         </div>
+      </div>
+      <div class="col-6 section-content">
+        <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownStatLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{statSelected}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownStatLink">
+            <a *ngFor="let stat of statTypes" (click)="setStatSelected(stat)" class="dropdown-item">{{stat}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 section-content">
+        <ul class="list-group">
+          <li *ngFor="let rune of runesFound" class="list-group-item">{{rune.value}}</li>
+        </ul>
       </div>
     </div>
   </div>
