@@ -56,8 +56,31 @@ export class GrindsTrackerComponent implements OnInit {
         });
       }
     });
-    // test see array
-    console.log(this.runeFound);
+    // filter rune by selected stat
+    this.sortByStat('');
+  }
+
+  sortByStat = (order: string) => {
+    this.runeFound.sort((a, b) => {
+      let first;
+      let second;
+      a.sec_eff.forEach(sec => {
+        if (this.getStat(sec[0]) == this.statSelected) {
+          first = sec[1] + sec[3];
+        }
+      });
+      b.sec_eff.forEach(sec => {
+        if (this.getStat(sec[0]) == this.statSelected) {
+          second = sec[1] + sec[3];
+        }
+      });
+      if (order == 'asc') {
+        // ascending order
+        return first - second;
+      } else {// descending order
+        return second - first;
+      }
+    });
   }
 
   getSet = (num: number) => {

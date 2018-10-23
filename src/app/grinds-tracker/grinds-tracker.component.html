@@ -34,9 +34,9 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 section-content">
-        <ul class="list-group">
-          <li *ngFor="let rune of runesFound" class="list-group-item">{{rune.value}}</li>
+      <div class="section-content">
+        <ul *ngFor="let rune of runeFound" class="list-group">
+          <li *ngFor="let sec of rune.sec_eff" class="list-group-item">{{sec}}</li>
         </ul>
       </div>
     </div>
